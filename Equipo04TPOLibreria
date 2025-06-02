@@ -257,21 +257,30 @@ def resumen_anual_prestamos_pesos(libros, prestamos, año): #13 COMPLETADO :)
     print(f"\nTotal General: ${total_general:,.2f}")
 
         
-def prestamosAtrasados(prestamos, alumnos): #14
-    ahora = datetime.now()
-    atrasados = []
-    for prestamo in prestamos:
-        fechaDev = datetime.strptime(prestamo["fechaDevolucion"], "%Y.%m.%d %H.%M.%S")
-        if fecha_dev < ahora:
-            diasAtraso = (ahora - fechaDev).days
-            idPrestamo = prestamo["IdPrestamo"]
-            fechaDevStr = fecha_dev.strftime("%Y-%m-%d %H:%M:%S")
-            idAlumno = prestamo["IdAlumno"]
-            nombreAlumno = next((alumno["nombre"] for alumno in alumnos if alumno["IdAlumno"] == id_alumno), "Desconocido")
-            mensaje = (f"ID Préstamo: {id_prestamo} | Alumno: {nombre_alumno} | "
-                       f"Fecha de devolución: {fecha_dev_str} | Días de atraso: {dias_atraso}")
-            atrasados.append(mensaje)
-    return atrasados
+def listarPrestamosAtrasados(prestamos, alumnos):
+    fechaActual = datetime.now()
+    print("Listado de préstamos atrasados al", fechaActual.strftime("%Y-%m-%d %H:%M:%S"))
+    print("-" * 55)
+
+    for idPrestamo in prestamos:
+        datosPrestamo = prestamos[idPrestamo]
+        fechaDevolucion = datetime.strptime(datosPrestamo["fechaDevolucion"], "%Y.%m.%d %H.%M.%S")
+
+        if fechaDevolucion < fechaActual:
+            idAlumno = datosPrestamo["IdAlumno"]
+            nombreAlumno = alumnos[idAlumno]["nombre"] + " " + alumnos[idAlumno]["apellido"]
+            diasAtraso = (fechaActual - fechaDevolucion).days
+
+            print(f"ID Préstamo: {idPrestamo}")
+            print(f"Alumno: {nombreAlumno}")
+            print(f"ID Alumno: {idAlumno}")
+            print(f"ID Libro: {datosPrestamo['IdLibro']}")
+            print(f"Tipo de préstamo: {datosPrestamo['tipoPrestamo']}")
+            print(f"Costo del préstamo: ${datosPrestamo['costoPrestamo']}")
+            print(f"Fecha de devolución: {datosPrestamo['fechaDevolucion']}")
+            print(f"Días de atraso: {diasAtraso}")
+            print("-" * 55)
+    return
         
         
 
@@ -490,7 +499,7 @@ def main():
                     resumen_anual_prestamos_pesos(Libros, Prestamos, año)
                 
                 elif opcionSubmenu == "4":   # Opción 4 del submenú
-                    prestamosAtrasados(prestamos, alumnos)
+                    listarPrestamosAtrasados(Prestamos, Alumnos)
         #elif opcionMenuPrincipal == "5":   # Opción 5 del menú principal
         #    ...
 
