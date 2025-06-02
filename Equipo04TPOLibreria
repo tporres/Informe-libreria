@@ -389,7 +389,7 @@ def main():
                 
                 elif opcionSubmenu == "3":   # Opción 3 del submenú
                     
-                    eliminarAlumno(_alumnos)
+                    eliminarAlumno(Alumnos)
                 
                 elif opcionSubmenu == "4":   # Opción 4 del submenú
                     listar_alumnos(Alumnos)
@@ -480,7 +480,7 @@ def main():
                     break # No sale del programa, sino que vuelve al menú anterior
                 
                 elif opcionSubmenu == "1":   # Opción 1 del submenú
-                    listaPrestamosMesActual(prestamos, alumnos, libros)
+                    listaPrestamosMesActual(Prestamos, Alumnos, Libros)
                     
                 elif opcionSubmenu == "2":   # Opción 2 del submenú
                     resumen_anual_prestamos(anio)
