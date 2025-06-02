@@ -26,7 +26,7 @@ def modificar_alumno(id_alumno, nuevos_datos): #2
             return
     print(f"Alumno {id_alumno} no encontrado.")
 
-def eliminarAlumno(_alumnos): #3
+def eliminarAlumno(_alumnos): #3 COMPLETADO
     """
     Da de baja lógicamente a un alumno si existe y está activo.
     Pide el ID hasta que sea un entero válido dentro del rango permitido (1000-9999).
@@ -159,7 +159,7 @@ def buscarLibrosPorCategoria(_libros):      # 10 COMPLETADO :)
     if not encontrados:
         print(f"\nNo se encontraron libros en la categoría '{categoria}'.")
 
-def listarPrestamosMesActual(prestamos):
+def listarPrestamosMesActual(prestamos): #11 COMPLETADO
     tipo_dict = {1: "Semanal", 2: "15 días", 3: "Mensual"}
     hoy = datetime.now()
 
@@ -189,7 +189,7 @@ def resumen_anual_prestamos(anio):  #12
         print(f"{libro_nombre} (ID: {libro_id}) - {cantidad} préstamo(s)")
         
         
-def resumen_anual_prestamos_pesos(libros, prestamos, año): #13 COMPLETADO :)
+def resumen_anual_prestamos_pesos(libros, prestamos, año): #13 COMPLETADO :) habria que hacer que el año se ingrese en la funcion
     """
     Genera un resumen anual de préstamos por libro en pesos.
     
