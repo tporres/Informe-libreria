@@ -159,30 +159,21 @@ def buscarLibrosPorCategoria(_libros):      # 10 COMPLETADO :)
     if not encontrados:
         print(f"\nNo se encontraron libros en la categoría '{categoria}'.")
 
+def listarPrestamosMesActual(prestamos):
+    tipo_dict = {1: "Semanal", 2: "15 días", 3: "Mensual"}
+    hoy = datetime.now()
+
+    print(f"{'Prestamo':<20} {'Alumno':<8} {'Libro':<6} {'TipoPrestamo':<12} {'FechaDevolucion':<20} {'Devuelto':<8} {'PrecioGarantía':>15}")
+    print("-" * 100)
+
+    for fecha_str, datos in prestamos.items():
+        fecha = datetime.strptime(fecha_str, "%Y.%m.%d %H.%M.%S")
+        if fecha.year == hoy.year and fecha.month == hoy.month:
+            tipo_texto = tipo_dict.get(datos["tipoPrestamo"], "Desconocido")
+            precio = f"{datos['costoPrestamo']:,.2f}"
+            print(f"{fecha_str:<20} {datos['IdAlumno']:<8} {datos['IdLibro']:<6} {tipo_texto:<12} {datos['fechaDevolucion']:<20} {str(datos['Devuelto']):<8} {precio:>15}")
 
 
-def listaPrestamosMesActual(prestamos, alumnos, libros):  #11
-    print(f"{'Fecha/Hora':<20} {'Cliente':<20} {'Producto':<25} {'Editorial':<15} {'Categoría':<15} {'Cant.':>5} {'Unit.':>10} {'Total':>12}")
-    print("-" * 122)
-
-    mes_actual = datetime.now().month
-    año_actual = datetime.now().year
-
-    for id_prestamo, datos in prestamos.items():
-        fecha_prestamo = datetime.strptime(id_prestamo, "%Y.%m.%d %H.%M.%S")
-        if fecha_prestamo.month == mes_actual and fecha_prestamo.year == año_actual:
-            id_alumno = datos["IdAlumno"]
-            id_libro = datos["IdLibro"]
-            cliente = alumnos.get(id_alumno, {}).get("nombre", "Desconocido")
-            libro = libros.get(id_libro, {})
-            producto = libro.get("nombre", "Desconocido")
-            editorial = libro.get("editorial", "Desconocido")
-            categoria = libro.get("categoria", "Desconocido")
-            cantidad = 1
-            unitario = datos["costoPrestamo"]
-            total = cantidad * unitario
-            print(f"{id_prestamo:<20} {cliente:<20} {producto:<25} {editorial:<15} {categoria:<15} {cantidad:>5} {unitario:>10,.0f} {total:>12,.0f}")
-    return
 
 def resumen_anual_prestamos(anio):  #12
     resumen = {}
@@ -305,17 +296,18 @@ def main():
 }
     
     Prestamos = {
-    "2025.06.01 09.15.00": {"IdAlumno": "1001", "IdLibro": "L001", "tipoPrestamo": "semanal", "costoPrestamo": 15000, "fechaDevolucion": "2025.06.08 09.15.00"},
-    "2025.06.02 14.30.00": {"IdAlumno": "1002", "IdLibro": "L002", "tipoPrestamo": "15 dias", "costoPrestamo": 120000, "fechaDevolucion": "2025.06.17 14.30.00"},
-    "2024.06.02 14.30.00": {"IdAlumno": "1002", "IdLibro": "L002", "tipoPrestamo": "15 dias", "costoPrestamo": 120000, "fechaDevolucion": "2025.06.17 14.30.00"},
-    "2025.06.03 10.00.00": {"IdAlumno": "1003", "IdLibro": "L003", "tipoPrestamo": "mensual", "costoPrestamo": 200000, "fechaDevolucion": "2025.07.03 10.00.00"},
-    "2025.06.04 11.45.00": {"IdAlumno": "1004", "IdLibro": "L004", "tipoPrestamo": "semanal", "costoPrestamo": 18000, "fechaDevolucion": "2025.06.11 11.45.00"},
-    "2025.06.05 13.20.00": {"IdAlumno": "1005", "IdLibro": "L005", "tipoPrestamo": "15 dias", "costoPrestamo": 30000, "fechaDevolucion": "2025.06.20 13.20.00"},
-    "2025.06.06 08.10.00": {"IdAlumno": "1006", "IdLibro": "L006", "tipoPrestamo": "mensual", "costoPrestamo": 45000, "fechaDevolucion": "2025.07.06 08.10.00"},
-    "2025.06.07 15.30.00": {"IdAlumno": "1007", "IdLibro": "L007", "tipoPrestamo": "semanal", "costoPrestamo": 17000, "fechaDevolucion": "2025.06.14 15.30.00"},
-    "2025.06.08 12.25.00": {"IdAlumno": "1008", "IdLibro": "L008", "tipoPrestamo": "15 dias", "costoPrestamo": 22000, "fechaDevolucion": "2025.06.23 12.25.00"},
-    "2025.06.09 09.00.00": {"IdAlumno": "1009", "IdLibro": "L009", "tipoPrestamo": "mensual", "costoPrestamo": 60000, "fechaDevolucion": "2025.07.09 09.00.00"}
+    "2025.06.01 09.15.00": {"IdAlumno": "1001", "IdLibro": "L001", "tipoPrestamo": 1,"costoPrestamo": 150, "fechaDevolucion": "2025.06.08 09.15.00", "Devuelto": True},
+    "2025.06.02 14.30.00": {"IdAlumno": "1002", "IdLibro": "L002", "tipoPrestamo": 2,"costoPrestamo": 120, "fechaDevolucion": "2025.06.17 14.30.00", "Devuelto": False},
+    "2024.06.02 14.30.00": {"IdAlumno": "1002", "IdLibro": "L002", "tipoPrestamo": 2,"costoPrestamo": 120, "fechaDevolucion": "2025.06.17 14.30.00", "Devuelto": True},
+    "2025.06.03 10.00.00": {"IdAlumno": "1003", "IdLibro": "L003", "tipoPrestamo": 3,"costoPrestamo": 200, "fechaDevolucion": "2025.07.03 10.00.00", "Devuelto": False},
+    "2025.06.04 11.45.00": {"IdAlumno": "1004", "IdLibro": "L004", "tipoPrestamo": 1,"costoPrestamo": 180, "fechaDevolucion": "2025.06.11 11.45.00", "Devuelto": True},
+    "2025.06.05 13.20.00": {"IdAlumno": "1005", "IdLibro": "L005", "tipoPrestamo": 2,"costoPrestamo": 300, "fechaDevolucion": "2025.06.20 13.20.00", "Devuelto": False},
+    "2025.06.06 08.10.00": {"IdAlumno": "1006", "IdLibro": "L006", "tipoPrestamo": 3,"costoPrestamo": 450, "fechaDevolucion": "2025.07.06 08.10.00", "Devuelto": False},
+    "2025.06.07 15.30.00": {"IdAlumno": "1007", "IdLibro": "L007", "tipoPrestamo": 1,"costoPrestamo": 170, "fechaDevolucion": "2025.06.14 15.30.00", "Devuelto": True},
+    "2025.06.08 12.25.00": {"IdAlumno": "1008", "IdLibro": "L008", "tipoPrestamo": 2,"costoPrestamo": 220, "fechaDevolucion": "2025.06.23 12.25.00", "Devuelto": False},
+    "2025.06.09 09.00.00": {"IdAlumno": "1009", "IdLibro": "L009", "tipoPrestamo": 3,"costoPrestamo": 600, "fechaDevolucion": "2025.07.09 09.00.00", "Devuelto": False}
 }
+
     
     Libros = {
     "L001": {"activo": True, "stock": 7, "nombre": "Cien Años de Soledad", "editorial": "Sudamericana", "categoria": "Novela", "autores": {"autor1": "Julio Cortázar", "autor2": "", "autor3": ""}},
@@ -361,9 +353,9 @@ def main():
         print()
 
         if opcionMenuPrincipal == "0": # Opción salir del programa
-            exit() # También puede ser sys.exit() para lo cual hay que importar el módulo sys
+            exit()
 
-        elif opcionMenuPrincipal == "1":   # Opción 1 del menú principal
+        elif opcionMenuPrincipal == "1":   # Opción 1 del menú principal, accede a la gestion de alumnos
             while True:
                 while True:
                     opciones = 4
@@ -390,24 +382,24 @@ def main():
                 if opcionSubmenu == "0": # Opción salir del submenú
                     break # No sale del programa, sino que vuelve al menú anterior
                 
-                elif opcionSubmenu == "1":   # Opción 1 del submenú
+                elif opcionSubmenu == "1":   # Opción 1 del submenú, permite cargar un alumno
                     ...
                     
-                elif opcionSubmenu == "2":   # Opción 2 del submenú
+                elif opcionSubmenu == "2":   # Opción 2 del submenú, permite modificar la informacion de un alumno
                     modificar_alumno(id_alumno, nuevos_datos)
                 
-                elif opcionSubmenu == "3":   # Opción 3 del submenú
+                elif opcionSubmenu == "3":   # Opción 3 del submenú, permite realizar un borrado logico de un alumno
                     
                     eliminarAlumno(Alumnos)
                 
-                elif opcionSubmenu == "4":   # Opción 4 del submenú
+                elif opcionSubmenu == "4":   # Opción 4 del submenú, muestra un listado de los alumnos activos
                     listar_alumnos(Alumnos)
 
                 input("\nPresione ENTER para volver al menú.") # Pausa entre opciones
                 print("\n\n")
 
 
-        elif opcionMenuPrincipal == "2":   # Opción 1 del menú principal
+        elif opcionMenuPrincipal == "2":   # Opción 2 del menú principal, accede a la gestion de libros
             while True:
                 while True:
                     opciones = 6
@@ -439,29 +431,29 @@ def main():
                 elif opcionSubmenu == "1":   # Opción 1 del submenú
                     ...
                     
-                elif opcionSubmenu == "2":   # Opción 2 del submenú
+                elif opcionSubmenu == "2":   # Opción 2 del submenú, accede a modificar libro
                     modificar_libro(id_libro, nuevos_datos)
                 
-                elif opcionSubmenu == "3":   # Opción 3 del submenú
+                elif opcionSubmenu == "3":   # Opción 3 del submenú, permite eliminar logicamente un libro
                     eliminarLibro(Libros)
                 
-                elif opcionSubmenu == "4":   # Opción 4 del submenú
+                elif opcionSubmenu == "4":   # Opción 4 del submenú, muestra un listado de los libros activos
                     librosActivos(Libros)
                     
-                elif opcionSubmenu == "5":   # Opción 3 del submenú
+                elif opcionSubmenu == "5":   # Opción 5 el submenú, muestra un listado de libros segun su autor
                     buscar_libros_por_autor(Libros)
                 
-                elif opcionSubmenu == "6":   # Opción 4 del submenú
+                elif opcionSubmenu == "6":   # Opción 6 del submenú, muestra un listado de libros segun su categoria
                     buscarLibrosPorCategoria(Libros)
                     
 
                 input("\nPresione ENTER para volver al menú.") # Pausa entre opciones
                 print("\n\n")
         
-        elif opcionMenuPrincipal == "3":   # Opción 3 del menú principal
+        elif opcionMenuPrincipal == "3":   # Opción 3 del menú principal, accede a registrar prestamo
             ...
         
-        elif opcionMenuPrincipal == "4":   # Opción 1 del menú principal
+        elif opcionMenuPrincipal == "4":   # Opción 4 del menú principal, accede a los informes
             while True:
                 while True:
                     opciones = 5
@@ -489,7 +481,7 @@ def main():
                     break # No sale del programa, sino que vuelve al menú anterior
                 
                 elif opcionSubmenu == "1":   # Opción 1 del submenú
-                    listaPrestamosMesActual(Prestamos, Alumnos, Libros)
+                    listarPrestamosMesActual(Prestamos)
                     
                 elif opcionSubmenu == "2":   # Opción 2 del submenú
                     resumen_anual_prestamos(anio)
