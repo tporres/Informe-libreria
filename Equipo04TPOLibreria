@@ -1,0 +1,503 @@
+"""
+-----------------------------------------------------------------------------------------------
+Título: TPO Entrega 1
+Fecha:  03/06/2025
+Autor:  Grupo 04
+
+Descripción:
+
+Pendientes:
+-----------------------------------------------------------------------------------------------
+"""
+
+#----------------------------------------------------------------------------------------------
+# MÓDULOS
+#----------------------------------------------------------------------------------------------
+import datetime
+
+#----------------------------------------------------------------------------------------------
+# FUNCIONES
+#----------------------------------------------------------------------------------------------
+def modificar_alumno(id_alumno, nuevos_datos): #2
+    for alumno in alumnos:
+        if alumno["IdAlumno"] == id_alumno:
+            alumno.update(nuevos_datos)
+            print(f"Alumno {id_alumno} modificado exitosamente.")
+            return
+    print(f"Alumno {id_alumno} no encontrado.")
+
+def eliminarAlumno(_alumnos): #3
+    """
+    Da de baja lógicamente a un alumno si existe y está activo.
+    Pide el ID hasta que sea un entero válido dentro del rango permitido (1000-9999).
+    """
+    while True:
+        legajo = input("Ingrese el ID del alumno a eliminar (entre 1000 y 9999): ")
+        print()
+
+        if not legajo.isdigit():
+            print("Error: Debe ingresar un número entero.")
+            continue
+
+        legajo_int = int(legajo)
+        if legajo_int < 1000 or legajo_int > 9999:
+            print("El ID ingresado está fuera del rango válido (1000 a 9999).")
+            continue
+
+        legajo = str(legajo_int)
+        break  # Si todo está OK, salimos del bucle
+
+    if legajo in _alumnos:
+        if _alumnos[legajo]["activo"]:
+            _alumnos[legajo]["activo"] = False
+            print(f"El alumno con ID {legajo} fue dado de baja.")
+        else:
+            print(f"El alumno con ID {legajo} ya estaba dado de baja.")
+    else:
+        print(f"No se encontró ningún alumno con ID {legajo}.")
+
+    return _alumnos
+
+
+def listar_alumnos(alumnos):  #4 COMPLETADO :)
+    encontrados = False
+    for legajo, datos in alumnos.items():
+        if datos["activo"]:
+            encontrados = True
+            print("-" * 30)
+            print(f"Legajo: {legajo}")
+            print(f"Nombre: {datos['nombre']} {datos['apellido']}")
+            print(f"Email: {datos['email']}")
+            print(f"Carrera: {datos['carrera']}")
+            print(f"Teléfono 1: {datos['telefonos']['telefono1']}")
+            print("-" * 30)
+    if not encontrados:
+        print("No hay alumnos activos para listar.")
+        
+
+def modificar_libro(id_libro, nuevos_datos): #6
+    for libro in libros:
+        if libro["IdLibro"] == id_libro:
+            libro.update(nuevos_datos)
+            print(f"Libro {id_libro} modificado exitosamente.")
+            return
+    print(f"Libro {id_libro} no encontrado.")
+
+
+def eliminarLibro(libros):  #7 COMPLETADO :)
+    idLibro = input("Ingrese el ID del libro que desea desactivar: ")
+
+    if idLibro in libros:
+        if libros[idLibro]["activo"]:
+            libros[idLibro]["activo"] = False
+            print(f"Libro '{libros[idLibro]['nombre']}' con ID {idLibro} fue desactivado correctamente.")
+            return 
+        else:
+            print(f"El libro con ID {idLibro} ya estaba inactivo.")
+            return 
+    else:
+        print(f"No se encontró ningún libro con ID {idLibro}.")
+        return
+
+
+def librosActivos(libros): #8 COMPLETADO :)
+    encontrados = False
+    for idLibro, datos in libros.items():
+        if datos["activo"]:
+            encontrados = True
+            print(f"ID del Libro: {idLibro}")
+            print(f"Nombre: {datos['nombre']}")
+            print(f"Editorial: {datos['editorial']}")
+            print(f"Categoría: {datos['categoria']}")
+            print(f"Stock: {datos['stock']}")
+            print(f"Autor 1: {datos['autores']['autor1']}")
+            print("-" * 30)
+
+    if not encontrados:
+        print("No hay libros activos para listar.")
+
+def buscar_libros_por_autor(libros):           # 9 COMPLETADO :)
+    autor_buscado = input("Ingrese el nombre del autor a buscar: ").strip().lower()
+    encontrados = False
+
+    for idLibro, datos in libros.items():
+        for key in ['autor1', 'autor2', 'autor3']:
+            autor = datos["autores"].get(key, "").strip().lower()
+            if autor and autor_buscado in autor:
+                encontrados = True
+                print("-" * 30)
+                print(f"ID del Libro: {idLibro}")
+                print(f"Nombre: {datos['nombre']}")
+                print(f"Editorial: {datos['editorial']}")
+                print(f"Categoría: {datos['categoria']}")
+                print(f"Stock: {datos['stock']}")
+                print(f"Autor 1: {datos['autores']['autor1']}")
+                print("-" * 30)
+                break  # Evita duplicar si el autor aparece más de una vez en el mismo libro
+
+    if not encontrados:
+        print(f"No se encontraron libros para el autor '{autor_buscado}'.")
+
+
+
+def buscarLibrosPorCategoria(_libros):      # 10 COMPLETADO :)
+    categoria = input("Ingrese la categoría a buscar: ").strip().lower()
+    encontrados = False
+
+    for idLibro, datos in _libros.items():
+        if datos["activo"] and categoria in datos["categoria"].lower():
+            encontrados = True
+            print("-" * 30)
+            print(f"ID del Libro: {idLibro}")
+            print(f"Nombre: {datos['nombre']}")
+            print(f"Editorial: {datos['editorial']}")
+            print(f"Categoría: {datos['categoria']}")
+            print(f"Stock: {datos['stock']}")
+            print(f"Autor 1: {datos['autores']['autor1']}")
+            print("-" * 30)
+
+    if not encontrados:
+        print(f"\nNo se encontraron libros en la categoría '{categoria}'.")
+
+
+
+def listaPrestamosMesActual(prestamos, alumnos, libros):  #11
+    print(f"{'Fecha/Hora':<20} {'Cliente':<20} {'Producto':<25} {'Editorial':<15} {'Categoría':<15} {'Cant.':>5} {'Unit.':>10} {'Total':>12}")
+    print("-" * 122)
+
+    mes_actual = datetime.now().month
+    año_actual = datetime.now().year
+
+    for id_prestamo, datos in prestamos.items():
+        fecha_prestamo = datetime.strptime(id_prestamo, "%Y.%m.%d %H.%M.%S")
+        if fecha_prestamo.month == mes_actual and fecha_prestamo.year == año_actual:
+            id_alumno = datos["IdAlumno"]
+            id_libro = datos["IdLibro"]
+            cliente = alumnos.get(id_alumno, {}).get("nombre", "Desconocido")
+            libro = libros.get(id_libro, {})
+            producto = libro.get("nombre", "Desconocido")
+            editorial = libro.get("editorial", "Desconocido")
+            categoria = libro.get("categoria", "Desconocido")
+            cantidad = 1
+            unitario = datos["costoPrestamo"]
+            total = cantidad * unitario
+            print(f"{id_prestamo:<20} {cliente:<20} {producto:<25} {editorial:<15} {categoria:<15} {cantidad:>5} {unitario:>10,.0f} {total:>12,.0f}")
+    return
+
+def resumen_anual_prestamos(anio):  #12
+    resumen = {}
+    for prestamo in prestamos:
+        anio_prestamo = prestamo["IdPrestamo"].split('.')[0]
+        if anio_prestamo == str(anio):
+            libro_id = prestamo["IdLibro"]
+            resumen[libro_id] = resumen.get(libro_id, 0) + 1
+
+    print(f"Resumen de préstamos del año {anio}:")
+    for libro_id, cantidad in resumen.items():
+        libro_nombre = next((libro["nombre"] for libro in libros if libro["IdLibro"] == libro_id), "Desconocido")
+        print(f"{libro_nombre} (ID: {libro_id}) - {cantidad} préstamo(s)")
+        
+        
+def resumen_anual_prestamos_pesos(libros, prestamos, año): #13 COMPLETADO :)
+    """
+    Genera un resumen anual de préstamos por libro en pesos.
+    
+    Args:
+        libros (dict): Diccionario con la información de los libros
+        prestamos (dict): Diccionario con la información de los préstamos
+        año (str): Año para el cual se desea el resumen (ej: "2024")
+    """
+    # Diccionario para almacenar los totales por libro
+    resumen = {}
+    
+    # Procesar cada préstamo
+    for fecha_prestamo, datos in prestamos.items():
+        # Extraer el año del préstamo
+        año_prestamo = fecha_prestamo.split('.')[0]
+        
+        # Si el préstamo es del año solicitado
+        if año_prestamo == año:
+            id_libro = datos["IdLibro"]
+            costo = datos["costoPrestamo"]
+            
+            # Si el libro no está en el resumen, inicializarlo
+            if id_libro not in resumen:
+                resumen[id_libro] = {
+                    "nombre": libros[id_libro]["nombre"],
+                    "total_prestamos": 0,
+                    "total_pesos": 0
+                }
+            
+            # Actualizar contadores
+            resumen[id_libro]["total_prestamos"] += 1
+            resumen[id_libro]["total_pesos"] += costo
+    
+    # Mostrar el resumen
+    print(f"\nResumen Anual de Préstamos {año}")
+    print("=" * 50)
+    
+    if not resumen:
+        print(f"No hay préstamos registrados para el año {año}")
+        return
+    
+    # Ordenar por total de pesos (de mayor a menor)
+    libros_ordenados = sorted(resumen.items(), 
+                            key=lambda x: x[1]["total_pesos"], 
+                            reverse=True)
+    
+    total_general = 0
+    for id_libro, datos in libros_ordenados:
+        print(f"\nLibro: {datos['nombre']}")
+        print(f"ID: {id_libro}")
+        print(f"Cantidad de préstamos: {datos['total_prestamos']}")
+        print(f"Total en pesos: ${datos['total_pesos']:,.2f}")
+        print("-" * 30)
+        total_general += datos["total_pesos"]
+    
+    print(f"\nTotal General: ${total_general:,.2f}")
+
+        
+def prestamosAtrasados(prestamos, alumnos): #14
+    ahora = datetime.now()
+    atrasados = []
+    for prestamo in prestamos:
+        fechaDev = datetime.strptime(prestamo["fechaDevolucion"], "%Y.%m.%d %H.%M.%S")
+        if fecha_dev < ahora:
+            diasAtraso = (ahora - fechaDev).days
+            idPrestamo = prestamo["IdPrestamo"]
+            fechaDevStr = fecha_dev.strftime("%Y-%m-%d %H:%M:%S")
+            idAlumno = prestamo["IdAlumno"]
+            nombreAlumno = next((alumno["nombre"] for alumno in alumnos if alumno["IdAlumno"] == id_alumno), "Desconocido")
+            mensaje = (f"ID Préstamo: {id_prestamo} | Alumno: {nombre_alumno} | "
+                       f"Fecha de devolución: {fecha_dev_str} | Días de atraso: {dias_atraso}")
+            atrasados.append(mensaje)
+    return atrasados
+        
+        
+
+#----------------------------------------------------------------------------------------------
+# CUERPO PRINCIPAL
+#----------------------------------------------------------------------------------------------
+def main():
+    #-------------------------------------------------
+    # Inicialización de variables
+    #----------------------------------------------------------------------------------------------
+    Alumnos = {
+    "1001": {"activo": True, "nombre": "Sofía", "apellido": "Martínez", "direccion": "Av. Corrientes 1234", "email": "sofia.martinez@gmail.com", "carrera": "Ingeniería en Sistemas", "telefonos": {"telefono1": "1134567890", "telefono2": "1145678901", "telefono3": "1156789012"}},
+    "1002": {"activo": True, "nombre": "Lucas", "apellido": "Fernández", "direccion": "Calle Falsa 123", "email": "lucas.fernandez@gmail.com", "carrera": "Licenciatura en Sistemas", "telefonos": {"telefono1": "1176543210", "telefono2": "", "telefono3": ""}},
+    "1003": {"activo": True, "nombre": "María", "apellido": "Gómez", "direccion": "Av. San Juan 456", "email": "maria.gomez@gmail.com", "carrera": "Ingeniería Industrial", "telefonos": {"telefono1": "1133344556", "telefono2": "", "telefono3": ""}},
+    "1004": {"activo": True, "nombre": "Tomás", "apellido": "Pérez", "direccion": "Av. Libertador 789", "email": "tomas.perez@gmail.com", "carrera": "Contador Público", "telefonos": {"telefono1": "1155556666", "telefono2": "1177778888", "telefono3": ""}},
+    "1005": {"activo": True, "nombre": "Camila", "apellido": "López", "direccion": "Calle Mendoza 234", "email": "camila.lopez@gmail.com", "carrera": "Derecho", "telefonos": {"telefono1": "1166667777", "telefono2": "", "telefono3": ""}},
+    "1006": {"activo": True, "nombre": "Mateo", "apellido": "Rodríguez", "direccion": "Calle Salta 100", "email": "mateo.rodriguez@gmail.com", "carrera": "Medicina", "telefonos": {"telefono1": "1188889999", "telefono2": "1199990000", "telefono3": ""}},
+    "1007": {"activo": True, "nombre": "Valentina", "apellido": "Díaz", "direccion": "Av. Córdoba 900", "email": "valentina.diaz@gmail.com", "carrera": "Arquitectura", "telefonos": {"telefono1": "1133214455", "telefono2": "", "telefono3": ""}},
+    "1008": {"activo": True, "nombre": "Julián", "apellido": "Sánchez", "direccion": "Calle Perú 678", "email": "julian.sanchez@gmail.com", "carrera": "Psicología", "telefonos": {"telefono1": "1122233344", "telefono2": "", "telefono3": ""}},
+    "1009": {"activo": True, "nombre": "Martina", "apellido": "Romero", "direccion": "Av. Rivadavia 200", "email": "martina.romero@gmail.com", "carrera": "Diseño Gráfico", "telefonos": {"telefono1": "1165432109", "telefono2": "", "telefono3": ""}},
+    "1010": {"activo": True, "nombre": "Benjamín", "apellido": "Ruiz", "direccion": "Calle Tucumán 300", "email": "benjamin.ruiz@gmail.com", "carrera": "Ingeniería Civil", "telefonos": {"telefono1": "1144433221", "telefono2": "", "telefono3": ""}}
+}
+    
+    Prestamos = {
+    "2025.06.01 09.15.00": {"IdAlumno": "1001", "IdLibro": "L001", "tipoPrestamo": "semanal", "costoPrestamo": 15000, "fechaDevolucion": "2025.06.08 09.15.00"},
+    "2025.06.02 14.30.00": {"IdAlumno": "1002", "IdLibro": "L002", "tipoPrestamo": "15 dias", "costoPrestamo": 120000, "fechaDevolucion": "2025.06.17 14.30.00"},
+    "2024.06.02 14.30.00": {"IdAlumno": "1002", "IdLibro": "L002", "tipoPrestamo": "15 dias", "costoPrestamo": 120000, "fechaDevolucion": "2025.06.17 14.30.00"},
+    "2025.06.03 10.00.00": {"IdAlumno": "1003", "IdLibro": "L003", "tipoPrestamo": "mensual", "costoPrestamo": 200000, "fechaDevolucion": "2025.07.03 10.00.00"},
+    "2025.06.04 11.45.00": {"IdAlumno": "1004", "IdLibro": "L004", "tipoPrestamo": "semanal", "costoPrestamo": 18000, "fechaDevolucion": "2025.06.11 11.45.00"},
+    "2025.06.05 13.20.00": {"IdAlumno": "1005", "IdLibro": "L005", "tipoPrestamo": "15 dias", "costoPrestamo": 30000, "fechaDevolucion": "2025.06.20 13.20.00"},
+    "2025.06.06 08.10.00": {"IdAlumno": "1006", "IdLibro": "L006", "tipoPrestamo": "mensual", "costoPrestamo": 45000, "fechaDevolucion": "2025.07.06 08.10.00"},
+    "2025.06.07 15.30.00": {"IdAlumno": "1007", "IdLibro": "L007", "tipoPrestamo": "semanal", "costoPrestamo": 17000, "fechaDevolucion": "2025.06.14 15.30.00"},
+    "2025.06.08 12.25.00": {"IdAlumno": "1008", "IdLibro": "L008", "tipoPrestamo": "15 dias", "costoPrestamo": 22000, "fechaDevolucion": "2025.06.23 12.25.00"},
+    "2025.06.09 09.00.00": {"IdAlumno": "1009", "IdLibro": "L009", "tipoPrestamo": "mensual", "costoPrestamo": 60000, "fechaDevolucion": "2025.07.09 09.00.00"}
+}
+    
+    Libros = {
+    "L001": {"activo": True, "stock": 7, "nombre": "Cien Años de Soledad", "editorial": "Sudamericana", "categoria": "Novela", "autores": {"autor1": "Julio Cortázar", "autor2": "", "autor3": ""}},
+    "L002": {"activo": True, "stock": 5, "nombre": "1984", "editorial": "Secker & Warburg", "categoria": "Distopía", "autores": {"autor1": "George Orwell", "autor2": "", "autor3": ""}},
+    "L003": {"activo": True, "stock": 3, "nombre": "El Principito", "editorial": "Reynal & Hitchcock", "categoria": "Fantasía", "autores": {"autor1": "Antoine de Saint-Exupéry", "autor2": "", "autor3": ""}},
+    "L004": {"activo": True, "stock": 4, "nombre": "Don Quijote de la Mancha", "editorial": "Francisco de Robles", "categoria": "Clásico", "autores": {"autor1": "Miguel de Cervantes", "autor2": "", "autor3": ""}},
+    "L005": {"activo": True, "stock": 2, "nombre": "La Sombra del Viento", "editorial": "Planeta", "categoria": "Misterio", "autores": {"autor1": "Carlos Ruiz Zafón", "autor2": "", "autor3": ""}},
+    "L006": {"activo": True, "stock": 8, "nombre": "Rayuela", "editorial": "Sudamericana", "categoria": "Novela", "autores": {"autor1": "Julio Cortázar", "autor2": "", "autor3": ""}},
+    "L007": {"activo": True, "stock": 6, "nombre": "Ficciones", "editorial": "Sur", "categoria": "Cuentos", "autores": {"autor1": "Jorge Luis Borges", "autor2": "", "autor3": ""}},
+    "L008": {"activo": True, "stock": 10, "nombre": "Harry Potter y la piedra filosofal", "editorial": "Salamandra", "categoria": "Fantasía", "autores": {"autor1": "J.K. Rowling", "autor2": "", "autor3": ""}},
+    "L009": {"activo": True, "stock": 1, "nombre": "Los Juegos del Hambre", "editorial": "Scholastic", "categoria": "Ciencia Ficción", "autores": {"autor1": "Suzanne Collins", "autor2": "", "autor3": ""}},
+    "L010": {"activo": True, "stock": 5, "nombre": "Orgullo y Prejuicio", "editorial": "T. Egerton", "categoria": "Romance", "autores": {"autor1": "Jane Austen", "autor2": "", "autor3": ""}}
+}
+
+
+
+
+    #-------------------------------------------------
+    # Bloque de menú
+    #----------------------------------------------------------------------------------------------
+    while True:
+        while True:
+            opciones = 4
+            print()
+            print("---------------------------")
+            print("MENÚ PRINCIPAL")
+            print("---------------------------")
+            print("[1] Gestión de Alumnos")
+            print("[2] Gestión de Libros")
+            print("[3] Gestión de Préstamos")
+            print("[4] Informes")
+            print("---------------------------")
+            print("[0] Salir del programa")
+            print("---------------------------")
+            print()
+            
+            opcionSubmenu = ""
+            opcionMenuPrincipal = input("Seleccione una opción: ")
+            if opcionMenuPrincipal in [str(i) for i in range(0, opciones + 1)]: # Sólo continua si se elije una opcion de menú válida
+                break
+            else:
+                input("Opción inválida. Presione ENTER para volver a seleccionar.")
+        print()
+
+        if opcionMenuPrincipal == "0": # Opción salir del programa
+            exit() # También puede ser sys.exit() para lo cual hay que importar el módulo sys
+
+        elif opcionMenuPrincipal == "1":   # Opción 1 del menú principal
+            while True:
+                while True:
+                    opciones = 4
+                    print()
+                    print("---------------------------")
+                    print("MENÚ PRINCIPAL > MENÚ DE CLIENTES")
+                    print("---------------------------")
+                    print("[1] Ingresar Alumno")
+                    print("[2] Modificar Alumno")
+                    print("[3] Eliminar Alumno")
+                    print("[4] Listado de Alumnos Activos")
+                    print("---------------------------")
+                    print("[0] Volver al menú anterior")
+                    print("---------------------------")
+                    print()
+                    
+                    opcionSubmenu = input("Seleccione una opción: ")
+                    if opcionSubmenu in [str(i) for i in range(0, opciones + 1)]: # Sólo continua si se elije una opcion de menú válida
+                        break
+                    else:
+                        input("Opción inválida. Presione ENTER para volver a seleccionar.")
+                print()
+
+                if opcionSubmenu == "0": # Opción salir del submenú
+                    break # No sale del programa, sino que vuelve al menú anterior
+                
+                elif opcionSubmenu == "1":   # Opción 1 del submenú
+                    ...
+                    
+                elif opcionSubmenu == "2":   # Opción 2 del submenú
+                    modificar_alumno(id_alumno, nuevos_datos)
+                
+                elif opcionSubmenu == "3":   # Opción 3 del submenú
+                    
+                    eliminarAlumno(_alumnos)
+                
+                elif opcionSubmenu == "4":   # Opción 4 del submenú
+                    listar_alumnos(Alumnos)
+
+                input("\nPresione ENTER para volver al menú.") # Pausa entre opciones
+                print("\n\n")
+
+
+        elif opcionMenuPrincipal == "2":   # Opción 1 del menú principal
+            while True:
+                while True:
+                    opciones = 6
+                    print()
+                    print("---------------------------")
+                    print("MENÚ PRINCIPAL > MENÚ DE LIBROS")
+                    print("---------------------------")
+                    print("[1] Ingresar Libro")
+                    print("[2] Modificar Libro")
+                    print("[3] Eliminar Libro")
+                    print("[4] Listado de Libros Activos")
+                    print("[5] Listado de Libros por Autor")
+                    print("[6] Listado de Libros por Categoría")
+                    print("---------------------------")
+                    print("[0] Volver al menú anterior")
+                    print("---------------------------")
+                    print()
+                    
+                    opcionSubmenu = input("Seleccione una opción: ")
+                    if opcionSubmenu in [str(i) for i in range(0, opciones + 1)]: # Sólo continua si se elije una opcion de menú válida
+                        break
+                    else:
+                        input("Opción inválida. Presione ENTER para volver a seleccionar.")
+                print()
+
+                if opcionSubmenu == "0": # Opción salir del submenú
+                    break # No sale del programa, sino que vuelve al menú anterior
+                
+                elif opcionSubmenu == "1":   # Opción 1 del submenú
+                    ...
+                    
+                elif opcionSubmenu == "2":   # Opción 2 del submenú
+                    modificar_libro(id_libro, nuevos_datos)
+                
+                elif opcionSubmenu == "3":   # Opción 3 del submenú
+                    eliminarLibro(Libros)
+                
+                elif opcionSubmenu == "4":   # Opción 4 del submenú
+                    librosActivos(Libros)
+                    
+                elif opcionSubmenu == "5":   # Opción 3 del submenú
+                    buscar_libros_por_autor(Libros)
+                
+                elif opcionSubmenu == "6":   # Opción 4 del submenú
+                    buscarLibrosPorCategoria(Libros)
+                    
+
+                input("\nPresione ENTER para volver al menú.") # Pausa entre opciones
+                print("\n\n")
+        
+        elif opcionMenuPrincipal == "3":   # Opción 3 del menú principal
+            ...
+        
+        elif opcionMenuPrincipal == "4":   # Opción 1 del menú principal
+            while True:
+                while True:
+                    opciones = 5
+                    print()
+                    print("---------------------------")
+                    print("MENÚ PRINCIPAL > INFORMES")
+                    print("---------------------------")
+                    print("[1] Préstamos del Mes")
+                    print("[2] Resumen Anual de Préstamos por Libro (cantidades)")
+                    print("[3] Resumen Anual de Préstamos por Libro (pesos)")
+                    print("[4] Resumen de Préstamos Atrasados")
+                    print("[5] Resumen Anual de Préstamos")
+                    print("---------------------------")
+                    print("[0] Volver al menú anterior")
+                    print("---------------------------")
+                    print()
+                    opcionSubmenu = input("Seleccione una opción: ")
+                    if opcionSubmenu in [str(i) for i in range(0, opciones + 1)]: # Sólo continua si se elije una opcion de menú válida
+                        break
+                    else:
+                        input("Opción inválida. Presione ENTER para volver a seleccionar.")
+                print()
+
+                if opcionSubmenu == "0": # Opción salir del submenú
+                    break # No sale del programa, sino que vuelve al menú anterior
+                
+                elif opcionSubmenu == "1":   # Opción 1 del submenú
+                    listaPrestamosMesActual(prestamos, alumnos, libros)
+                    
+                elif opcionSubmenu == "2":   # Opción 2 del submenú
+                    resumen_anual_prestamos(anio)
+                
+                elif opcionSubmenu == "3":   # Opción 3 del submenú
+                    año = input("Ingrese el año a realizar el resumen: ")
+                    resumen_anual_prestamos_pesos(Libros, Prestamos, año)
+                
+                elif opcionSubmenu == "4":   # Opción 4 del submenú
+                    prestamosAtrasados(prestamos, alumnos)
+        #elif opcionMenuPrincipal == "5":   # Opción 5 del menú principal
+        #    ...
+
+        if opcionSubmenu != "0": # Pausa entre opciones. No la realiza si se vuelve de un submenú
+            input("\nPresione ENTER para volver al menú.")
+            print("\n\n")
+
+
+# Punto de entrada al programa
+main()
