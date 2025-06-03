@@ -325,54 +325,52 @@ def sumarDias(fecha, dias) :  #Funcion auxiliar para calcular los dias para devo
         fecha = resultado
     return resultado
         
-def registrarPrestamo(alumnos, libros, prestamos): #Remover try y except hasta la proxima entrega
+from datetime import datetime
+
+
+from datetime import datetime
+
+from datetime import datetime, timedelta
+
+def sumarDias(fecha, dias):
+    return fecha + timedelta(days=dias)
+
+from datetime import datetime
+
+def registrarPrestamo(alumnos, libros, prestamos):
     print("\n--- Registro de nuevo préstamo ---")
 
-    idAlumno = input("ID del alumno (ej: A0001): ").strip()
-    alumno = None
-    for a in alumnos:
-        if a["IdAlumno"] == idAlumno and a["activo"] == True:
-            alumno = a
-            break
-
-    if alumno is None:
+    idAlumno = input("ID del alumno (ej: 1001): ").strip()
+    if idAlumno not in alumnos or not alumnos[idAlumno]["activo"]:
         print("Alumno no válido o inactivo.")
         return
 
     idLibro = input("ID del libro (ej: L0001): ").strip()
-    libro = None
-    for l in listaLibros:
-        if l["IdLibro"] == idLibro and l["activo"] == True and l["stock"] > 0:
-            libro = l
-            break
-
-    if libro is None:
+    if idLibro not in libros or not libros[idLibro]["activo"] or libros[idLibro]["stock"] <= 0:
         print("Libro no válido, inactivo o sin stock.")
         return
 
-    try:
-        tipoPrestamo = int(input("Tipo de préstamo (1 para semanal, 2 para 15 dias y 3 para 30 dias): ").strip())
-        if tipoPrestamo not in [1, 2,3]:
-            print("Tipo inválido.")
-            return
-    except ValueError:
-        print("Ingrese un número válido.")
+    tipoPrestamo = input("Tipo de préstamo (1 para semanal, 2 para 15 días y 3 para 30 días): ").strip()
+    if tipoPrestamo not in ["1", "2", "3"]:
+        print("Tipo de préstamo inválido.")
         return
+    tipoPrestamo = int(tipoPrestamo)
 
-    try:
-        costoPrestamo = int(input("Costo del préstamo en pesos: ").strip())
-    except ValueError:
-        print("Ingrese un valor numérico para el costo.")
-        return
+    # Calcular costoPrestamo basado en costoGarantia * tipoPrestamo
+    costoGarantia = libros[idLibro].get("costo", 0)
+    
 
     fechaPrestamo = datetime.now()
+
     if tipoPrestamo == 1:
         diasADevolver = 7
-    elif tipoPrestamo==2:
-        diasADevolver=15
+    elif tipoPrestamo == 2:
+        diasADevolver = 15
     else:
-        diasADevolver =30
-    
+        diasADevolver = 30
+        
+    costoPrestamo = costoGarantia * diasADevolver
+
     fechaDevolucion = sumarDias(fechaPrestamo, diasADevolver)
 
     idPrestamo = f'P{fechaPrestamo.strftime("%Y.%m.%d %H.%M.%S")}'
@@ -383,14 +381,18 @@ def registrarPrestamo(alumnos, libros, prestamos): #Remover try y except hasta l
         "tipoPrestamo": tipoPrestamo,
         "costoPrestamo": costoPrestamo,
         "fechaDevolucion": fechaDevolucion.strftime("%Y.%m.%d %H.%M.%S"),
-        "Devuelto":False
+        "Devuelto": False
     }
 
-    listaPrestamos.append(nuevoPrestamo)
-    libro["stock"] -= 1
+    prestamos[idPrestamo] = nuevoPrestamo
+    libros[idLibro]["stock"] -= 1
 
     print(f"✅ Préstamo registrado correctamente con ID: {idPrestamo}")
-    return
+    print(nuevoPrestamo)
+
+
+
+
 
 def devolverPrestamo(prestamos):
     print("----- REGISTRAR DEVOLUCIÓN -----")
@@ -578,20 +580,22 @@ def main():
     "2025.06.08 12.25.00": {"IdAlumno": "1008", "IdLibro": "L008", "tipoPrestamo": 2,"costoPrestamo": 220, "fechaDevolucion": "2025.06.23 12.25.00", "Devuelto": False},
     "2025.06.09 09.00.00": {"IdAlumno": "1009", "IdLibro": "L009", "tipoPrestamo": 3,"costoPrestamo": 600, "fechaDevolucion": "2025.07.09 09.00.00", "Devuelto": False}
 }
+    Libros = {
+    "L001": {"activo": True, "stock": 7, "nombre": "Cien Años de Soledad", "editorial": "Sudamericana", "categoria": "Novela", "autores": {"autor1": "Julio Cortázar", "autor2": "", "autor3": ""}, "costo": 350.0},
+    "L002": {"activo": True, "stock": 5, "nombre": "1984", "editorial": "Secker & Warburg", "categoria": "Distopía", "autores": {"autor1": "George Orwell", "autor2": "", "autor3": ""}, "costo": 280.0},
+    "L003": {"activo": True, "stock": 3, "nombre": "El Principito", "editorial": "Reynal & Hitchcock", "categoria": "Fantasía", "autores": {"autor1": "Antoine de Saint-Exupéry", "autor2": "", "autor3": ""}, "costo": 150.0},
+    "L004": {"activo": True, "stock": 4, "nombre": "Don Quijote de la Mancha", "editorial": "Francisco de Robles", "categoria": "Clásico", "autores": {"autor1": "Miguel de Cervantes", "autor2": "", "autor3": ""}, "costo": 400.0},
+    "L005": {"activo": True, "stock": 2, "nombre": "La Sombra del Viento", "editorial": "Planeta", "categoria": "Misterio", "autores": {"autor1": "Carlos Ruiz Zafón", "autor2": "", "autor3": ""}, "costo": 320.0},
+    "L006": {"activo": True, "stock": 8, "nombre": "Rayuela", "editorial": "Sudamericana", "categoria": "Novela", "autores": {"autor1": "Julio Cortázar", "autor2": "", "autor3": ""}, "costo": 270.0},
+    "L007": {"activo": True, "stock": 6, "nombre": "Ficciones", "editorial": "Sur", "categoria": "Cuentos", "autores": {"autor1": "Jorge Luis Borges", "autor2": "", "autor3": ""}, "costo": 310.0},
+    "L008": {"activo": True, "stock": 10, "nombre": "Harry Potter y la piedra filosofal", "editorial": "Salamandra", "categoria": "Fantasía", "autores": {"autor1": "J.K. Rowling", "autor2": "", "autor3": ""}, "costo": 380.0},
+    "L009": {"activo": True, "stock": 1, "nombre": "Los Juegos del Hambre", "editorial": "Scholastic", "categoria": "Ciencia Ficción", "autores": {"autor1": "Suzanne Collins", "autor2": "", "autor3": ""}, "costo": 290.0},
+    "L010": {"activo": True, "stock": 5, "nombre": "Orgullo y Prejuicio", "editorial": "T. Egerton", "categoria": "Romance", "autores": {"autor1": "Jane Austen", "autor2": "", "autor3": ""}, "costo": 260.0}
+}
+
 
     
-    Libros = {
-    "L001": {"activo": True, "stock": 7, "nombre": "Cien Años de Soledad", "editorial": "Sudamericana", "categoria": "Novela", "autores": {"autor1": "Julio Cortázar", "autor2": "", "autor3": ""}},
-    "L002": {"activo": True, "stock": 5, "nombre": "1984", "editorial": "Secker & Warburg", "categoria": "Distopía", "autores": {"autor1": "George Orwell", "autor2": "", "autor3": ""}},
-    "L003": {"activo": True, "stock": 3, "nombre": "El Principito", "editorial": "Reynal & Hitchcock", "categoria": "Fantasía", "autores": {"autor1": "Antoine de Saint-Exupéry", "autor2": "", "autor3": ""}},
-    "L004": {"activo": True, "stock": 4, "nombre": "Don Quijote de la Mancha", "editorial": "Francisco de Robles", "categoria": "Clásico", "autores": {"autor1": "Miguel de Cervantes", "autor2": "", "autor3": ""}},
-    "L005": {"activo": True, "stock": 2, "nombre": "La Sombra del Viento", "editorial": "Planeta", "categoria": "Misterio", "autores": {"autor1": "Carlos Ruiz Zafón", "autor2": "", "autor3": ""}},
-    "L006": {"activo": True, "stock": 8, "nombre": "Rayuela", "editorial": "Sudamericana", "categoria": "Novela", "autores": {"autor1": "Julio Cortázar", "autor2": "", "autor3": ""}},
-    "L007": {"activo": True, "stock": 6, "nombre": "Ficciones", "editorial": "Sur", "categoria": "Cuentos", "autores": {"autor1": "Jorge Luis Borges", "autor2": "", "autor3": ""}},
-    "L008": {"activo": True, "stock": 10, "nombre": "Harry Potter y la piedra filosofal", "editorial": "Salamandra", "categoria": "Fantasía", "autores": {"autor1": "J.K. Rowling", "autor2": "", "autor3": ""}},
-    "L009": {"activo": True, "stock": 1, "nombre": "Los Juegos del Hambre", "editorial": "Scholastic", "categoria": "Ciencia Ficción", "autores": {"autor1": "Suzanne Collins", "autor2": "", "autor3": ""}},
-    "L010": {"activo": True, "stock": 5, "nombre": "Orgullo y Prejuicio", "editorial": "T. Egerton", "categoria": "Romance", "autores": {"autor1": "Jane Austen", "autor2": "", "autor3": ""}}
-}
+
 
 
 
