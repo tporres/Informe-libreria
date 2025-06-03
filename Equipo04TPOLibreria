@@ -73,14 +73,14 @@ def modificarAlumno(alumnos):
     """
     print("\n=== Modificar Alumno ===")
     print("Alumnos disponibles:")
-    for id_al, datos in alumnos.items():
-        print(f"{id_al}: {datos['nombre']} {datos['apellido']}")
-    id_alumno = input("Ingrese el ID del alumno a modificar: ").strip()
-    if id_alumno not in alumnos:
+    for idAl, datos in alumnos.items():
+        print(f"{idAl}: {datos['nombre']} {datos['apellido']}")
+    idAlumno = input("Ingrese el ID del alumno a modificar: ").strip()
+    if idAlumno not in alumnos:
         print("ID de alumno no válido.")
         return
 
-    alumno = alumnos[id_alumno]
+    alumno = alumnos[idAlumno]
     print("\nDeje en blanco para no modificar ese campo.")
 
     nombre = input(f"Nombre actual ({alumno['nombre']}): ").strip()
@@ -115,7 +115,7 @@ def modificarAlumno(alumnos):
     return
 
 
-def eliminarAlumno(_alumnos): #3 COMPLETADO
+def eliminarAlumno(alumnos): #3 COMPLETADO
     """
     Da de baja lógicamente a un alumno si existe y está activo.
     Pide el ID hasta que sea un entero válido dentro del rango permitido (1000-9999).
@@ -128,24 +128,24 @@ def eliminarAlumno(_alumnos): #3 COMPLETADO
             print("Error: Debe ingresar un número entero.")
             continue
 
-        legajo_int = int(legajo)
-        if legajo_int < 1000 or legajo_int > 9999:
+        legajoInt = int(legajo)
+        if legajoInt < 1000 or legajoInt > 9999:
             print("El ID ingresado está fuera del rango válido (1000 a 9999).")
             continue
 
-        legajo = str(legajo_int)
+        legajo = str(legajoInt)
         break  # Si todo está OK, salimos del bucle
 
-    if legajo in _alumnos:
-        if _alumnos[legajo]["activo"]:
-            _alumnos[legajo]["activo"] = False
+    if legajo in alumnos:
+        if alumnos[legajo]["activo"]:
+            alumnos[legajo]["activo"] = False
             print(f"El alumno con ID {legajo} fue dado de baja.")
         else:
             print(f"El alumno con ID {legajo} ya estaba dado de baja.")
     else:
         print(f"No se encontró ningún alumno con ID {legajo}.")
 
-    return _alumnos
+    return alumnos
 
 
 def listarAlumnos(alumnos):  #4 COMPLETADO :)
@@ -200,8 +200,8 @@ def ingresoLibros(libros):  # libros es un diccionario
         nuevoId = "L001"
     else:
         ultimoId = [int(clave[1:]) for clave in libros.keys()]
-        nuevo_num = max(ultimoId) + 1
-        nuevoId = f"L{nuevo_num:03d}"
+        nuevoNum = max(ultimoId) + 1
+        nuevoId = f"L{nuevoNum:03d}"
 
     if stock > 0:
         activo = True
@@ -219,7 +219,7 @@ def ingresoLibros(libros):  # libros es un diccionario
             "autor2": autor2,
             "autor3": autor3
         },
-        "costoGarantia": costo
+        "costo": costo
     }
 
     libros[nuevoId] = libro  # Se agrega al diccionario original
@@ -233,21 +233,21 @@ def modificarLibro(libros):
     """
     print("\n=== Modificar Libro ===")
     print("Libros disponibles:")
-    for id_lib, datos in libros.items():
-        print(f"{id_lib}: {datos['nombre']}")
-    id_libro = input("Ingrese el ID del libro a modificar: ").strip()
-    if id_libro not in libros:
+    for idLib, datos in libros.items():
+        print(f"{idLib}: {datos['nombre']}")
+    idLibro = input("Ingrese el ID del libro a modificar: ").strip()
+    if idLibro not in libros:
         print("ID de libro no válido.")
         return
 
-    libro = libros[id_libro]
+    libro = libros[idLibro]
     print("\nDeje en blanco para no modificar ese campo.")
 
     nombre = input(f"Nombre actual ({libro['nombre']}): ").strip()
     editorial = input(f"Editorial actual ({libro['editorial']}): ").strip()
     categoria = input(f"Categoría actual ({libro['categoria']}): ").strip()
     stock = input(f"Stock actual ({libro['stock']}): ").strip()
-    costo = float(input(f"Costo actual ({libro['costo']}): ").strip())
+    costo = input(f"Costo actual ({libro['costo']}): ").strip()
     activo = input(f"¿Activo? (actual: {libro['activo']}, s/n): ").strip().lower()
 
     autor1 = input(f"Autor 1 actual ({libro['autores']['autor1']}): ").strip()
@@ -264,7 +264,7 @@ def modificarLibro(libros):
     if stock and stock.isdigit():
         libro['stock'] = int(stock)
     if costo:
-            libro['costo'] = float(costo)
+        libro['costo'] = float(costo)
     if activo:
         libro['activo'] = (activo == "s")
 
@@ -277,7 +277,6 @@ def modificarLibro(libros):
 
     print("\nLibro modificado exitosamente.")
     return
-
 
 def eliminarLibro(libros):  #7 COMPLETADO :)
     idLibro = input("Ingrese el ID del libro que desea desactivar: ")
@@ -313,13 +312,13 @@ def librosActivos(libros): #8 COMPLETADO :)
     return
 
 def buscarLibrosPorAutor(libros):           # 9 COMPLETADO :)
-    autor_buscado = input("Ingrese el nombre del autor a buscar: ").strip().lower()
+    autorBuscado = input("Ingrese el nombre del autor a buscar: ").strip().lower()
     encontrados = False
 
     for idLibro, datos in libros.items():
         for key in ['autor1', 'autor2', 'autor3']:
             autor = datos["autores"].get(key, "").strip().lower()
-            if autor and autor_buscado in autor:
+            if autor and autorBuscado in autor:
                 encontrados = True
                 print("-" * 30)
                 print(f"ID del Libro: {idLibro}")
@@ -332,16 +331,16 @@ def buscarLibrosPorAutor(libros):           # 9 COMPLETADO :)
                 break  # Evita duplicar si el autor aparece más de una vez en el mismo libro
 
     if not encontrados:
-        print(f"No se encontraron libros para el autor '{autor_buscado}'.")
+        print(f"No se encontraron libros para el autor '{autorBuscado}'.")
     return
 
 
 
-def buscarLibrosPorCategoria(_libros):      # 10 COMPLETADO :)
+def buscarLibrosPorCategoria(libros):      # 10 COMPLETADO :)
     categoria = input("Ingrese la categoría a buscar: ").strip().lower()
     encontrados = False
 
-    for idLibro, datos in _libros.items():
+    for idLibro, datos in libros.items():
         if datos["activo"] and categoria in datos["categoria"].lower():
             encontrados = True
             print("-" * 30)
@@ -390,7 +389,7 @@ def registrarPrestamo(alumnos, libros, prestamos):
         print("Alumno no válido o inactivo.")
         return
 
-    idLibro = input("ID del libro (ej: L0001): ").strip()
+    idLibro = input("ID del libro (ej: L001): ").strip()
     if idLibro not in libros or not libros[idLibro]["activo"] or libros[idLibro]["stock"] <= 0:
         print("Libro no válido, inactivo o sin stock.")
         return
@@ -402,7 +401,7 @@ def registrarPrestamo(alumnos, libros, prestamos):
     tipoPrestamo = int(tipoPrestamo)
 
     # Calcular costoPrestamo basado en costoGarantia * tipoPrestamo
-    costoGarantia = libros[idLibro].get("costo", 0)
+    costo = libros[idLibro].get("costo", 0)
     
 
     fechaPrestamo = datetime.now()
@@ -414,13 +413,12 @@ def registrarPrestamo(alumnos, libros, prestamos):
     else:
         diasADevolver = 30
         
-    costoPrestamo = costoGarantia * diasADevolver
+    costoPrestamo = costo * diasADevolver
 
     fechaDevolucion = sumarDias(fechaPrestamo, diasADevolver)
 
-    idPrestamo = {fechaPrestamo.strftime("%Y.%m.%d %H.%M.%S")}
+    idPrestamo = fechaPrestamo.strftime("%Y.%m.%d %H.%M.%S")
     nuevoPrestamo = {
-        "IdPrestamo": idPrestamo,
         "IdAlumno": idAlumno,
         "IdLibro": idLibro,
         "tipoPrestamo": tipoPrestamo,
@@ -442,13 +440,13 @@ def registrarPrestamo(alumnos, libros, prestamos):
 
 def devolverPrestamo(prestamos):
     print("----- REGISTRAR DEVOLUCIÓN -----")
-    id_prestamo = input("Ingrese el ID del préstamo (formato AAAA.MM.DD hh.mm.ss): ").strip()
+    idPrestamo = input("Ingrese el ID del préstamo (formato AAAA.MM.DD hh.mm.ss): ").strip()
 
-    if id_prestamo in prestamos:
-        if prestamos[id_prestamo].get("Devuelto", False):
+    if idPrestamo in prestamos:
+        if prestamos[idPrestamo].get("Devuelto", False):
             print("Este préstamo ya fue registrado como devuelto.")
         else:
-            prestamos[id_prestamo]["Devuelto"] = True
+            prestamos[idPrestamo]["Devuelto"] = True
             print("La devolución fue registrada correctamente.")
     else:
         print("No se encontró un préstamo con ese ID.")
@@ -487,10 +485,10 @@ def resumenAnualPrestamosCantidadTabla(libros, prestamos, año):  #12 COMPLETADO
         "ENE", "FEB", "MAR", "ABR", "MAY", "JUN",
         "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"
     ]
-    # Inicializar estructura: {id_libro: [0, 0, ..., 0] (12 meses)}
+    # Inicializar estructura: {idLibro: [0, 0, ..., 0] (12 meses)}
     resumen = {}
-    for id_libro, info in libros.items():
-        resumen[id_libro] = [0] * 12
+    for idLibro, info in libros.items():
+        resumen[idLibro] = [0] * 12
 
     # Procesar préstamos
     for fechaPrestamo, datos in prestamos.items():
@@ -532,7 +530,7 @@ def resumenAnualPrestamosPesosTabla(libros, prestamos, año):   #13 COMPLETADO
         "ENE", "FEB", "MAR", "ABR", "MAY", "JUN",
         "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"
     ]
-    # Inicializar estructura: {id_libro: [0, 0, ..., 0] (12 meses)}
+    # Inicializar estructura: {idLibro: [0, 0, ..., 0] (12 meses)}
     resumen = {}
     for idLibro, info in libros.items():
         resumen[idLibro] = [0] * 12
@@ -856,5 +854,6 @@ def main():
 
 # Punto de entrada al programa
 main()
+
 
 
