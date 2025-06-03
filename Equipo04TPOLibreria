@@ -18,6 +18,7 @@ from datetime import datetime
 #----------------------------------------------------------------------------------------------
 # FUNCIONES
 #----------------------------------------------------------------------------------------------
+# FUNCIONES PARA GESTIONAR ALUMNOS
 def modificar_alumno(id_alumno, nuevos_datos): #2
     for alumno in alumnos:
         if alumno["IdAlumno"] == id_alumno:
@@ -74,7 +75,7 @@ def listar_alumnos(alumnos):  #4 COMPLETADO :)
     if not encontrados:
         print("No hay alumnos activos para listar.")
         
-
+#FUNCIONES PARA GESTIONAR LIBROS
 def modificar_libro(id_libro, nuevos_datos): #6
     for libro in libros:
         if libro["IdLibro"] == id_libro:
@@ -159,6 +160,21 @@ def buscarLibrosPorCategoria(_libros):      # 10 COMPLETADO :)
     if not encontrados:
         print(f"\nNo se encontraron libros en la categoría '{categoria}'.")
 
+#FUNCIONES PARA GESTIONAR PRESTAMOS
+def devolverPrestamo(prestamos):
+    print("----- REGISTRAR DEVOLUCIÓN -----")
+    id_prestamo = input("Ingrese el ID del préstamo (formato AAAA.MM.DD hh.mm.ss): ").strip()
+
+    if id_prestamo in prestamos:
+        if prestamos[id_prestamo].get("Devuelto", False):
+            print("Este préstamo ya fue registrado como devuelto.")
+        else:
+            prestamos[id_prestamo]["Devuelto"] = True
+            print("La devolución fue registrada correctamente.")
+    else:
+        print("No se encontró un préstamo con ese ID.")
+
+#FUNCIONES PARA INFORMES 
 def listarPrestamosMesActual(prestamos): #11 COMPLETADO
     tipo_dict = {1: "Semanal", 2: "15 días", 3: "Mensual"}
     hoy = datetime.now()
@@ -451,7 +467,40 @@ def main():
                 print("\n\n")
         
         elif opcionMenuPrincipal == "3":   # Opción 3 del menú principal, accede a registrar prestamo
-            ...
+            elif opcionMenuPrincipal == "3":  # Opción 3 del menú principal, accede a registrar prestamo y devolver prestamo
+            while True:
+                while True:
+                    opciones = 2
+                    print()
+                    print("---------------------------")
+                    print("MENÚ PRINCIPAL > INFORMES")
+                    print("---------------------------")
+                    print("[1] Registrar Prestamo")
+                    print("[2] Devolver Prestamo")
+                    print("---------------------------")
+                    print("[0] Volver al menú anterior")
+                    print("---------------------------")
+                    print()
+                    opcionSubmenu = input("Seleccione una opción: ")
+                    if opcionSubmenu in [str(i) for i in range(0, opciones + 1)]: # Sólo continua si se elije una opcion de menú válida
+                        break
+                    else:
+                        input("Opción inválida. Presione ENTER para volver a seleccionar.")
+                print()
+
+                if opcionSubmenu == "0": # Opción salir del submenú
+                    break # No sale del programa, sino que vuelve al menú anterior
+                
+                elif opcionSubmenu == "1":   # Opción 1 del submenú
+                    ...
+                    
+                elif opcionSubmenu == "2":   # Opción 2 del submenú
+                    devolverPrestamo(Prestamos)
+                
+
+        if opcionSubmenu != "0": # Pausa entre opciones. No la realiza si se vuelve de un submenú
+            input("\nPresione ENTER para volver al menú.")
+            print("\n\n")
         
         elif opcionMenuPrincipal == "4":   # Opción 4 del menú principal, accede a los informes
             while True:
