@@ -710,14 +710,14 @@ def main():
                     devolverPrestamo(Prestamos)
                 
 
-        if opcionSubmenu != "0": # Pausa entre opciones. No la realiza si se vuelve de un submenú
-            input("\nPresione ENTER para volver al menú.")
-            print("\n\n")
+            if opcionSubmenu != "0": # Pausa entre opciones. No la realiza si se vuelve de un submenú
+                input("\nPresione ENTER para volver al menú.")
+                print("\n\n")
         
         elif opcionMenuPrincipal == "4":   # Opción 4 del menú principal, accede a los informes
             while True:
                 while True:
-                    opciones = 5
+                    opciones = 4
                     print()
                     print("---------------------------")
                     print("MENÚ PRINCIPAL > INFORMES")
@@ -726,7 +726,6 @@ def main():
                     print("[2] Resumen Anual de Préstamos por Libro (cantidades)")
                     print("[3] Resumen Anual de Préstamos por Libro (pesos)")
                     print("[4] Resumen de Préstamos Atrasados")
-                    print("[5] Resumen Anual de Préstamos")
                     print("---------------------------")
                     print("[0] Volver al menú anterior")
                     print("---------------------------")
@@ -750,12 +749,11 @@ def main():
                 
                 elif opcionSubmenu == "3":   # Opción 3 del submenú
                     año = input("Ingrese el año a realizar el resumen: ")
-                    resumen_anual_prestamos_pesos(Libros, Prestamos, año)
+                    resumen_anual_prestamos_pesos_tabla(Libros, Prestamos, año)
                 
                 elif opcionSubmenu == "4":   # Opción 4 del submenú
                     listarPrestamosAtrasados(Prestamos, Alumnos)
-        #elif opcionMenuPrincipal == "5":   # Opción 5 del menú principal
-        #    ...
+
 
         if opcionSubmenu != "0": # Pausa entre opciones. No la realiza si se vuelve de un submenú
             input("\nPresione ENTER para volver al menú.")
