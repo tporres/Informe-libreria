@@ -22,6 +22,10 @@ from datetime import datetime, timedelta
 # FUNCIONES PARA GESTIONAR ALUMNOS
 
 def ingresoAlumno(alumnos):
+
+    '''
+    Recibe por teclado los datos del alumno y carga los datos al diccionario "Alumnos" para su posterior uso.
+    '''
     print("---------------------------")
     print("Ingreso de nuevo Alumno")
     print("---------------------------")
@@ -148,7 +152,11 @@ def eliminarAlumno(alumnos): #3 COMPLETADO
     return alumnos
 
 
-def listarAlumnos(alumnos):  #4 COMPLETADO :)
+def listarAlumnos(alumnos):
+    """
+    Recibe el diccionario "Alumnos" y muestra un listado de todos los alumnos que tengan el valor de "Activo" como true.
+    Si no encuentra ningun registro que cumpla con la condicion, muestra un mensaje acorde.
+    """
     encontrados = False
     for legajo, datos in alumnos.items():
         if datos["activo"]:
@@ -166,6 +174,10 @@ def listarAlumnos(alumnos):  #4 COMPLETADO :)
         
 #FUNCIONES PARA GESTIONAR LIBROS
 def ingresoLibros(libros):  # libros es un diccionario
+
+    """
+    Se ingresan los datos del libro a cargar en el sistema por teclado y se guardan en el diccionario "Libros".
+    """
     print("---------------------------")
     print("Ingreso de nuevo libro")
     print("---------------------------")
@@ -278,7 +290,10 @@ def modificarLibro(libros):
     print("\nLibro modificado exitosamente.")
     return
 
-def eliminarLibro(libros):  #7 COMPLETADO :)
+def eliminarLibro(libros):
+    """
+    Recibe por teclado el ID del libro a eliminar y se actializa el campo "Activo" de True a False.
+    """
     idLibro = input("Ingrese el ID del libro que desea desactivar: ")
 
     if idLibro in libros:
@@ -294,7 +309,10 @@ def eliminarLibro(libros):  #7 COMPLETADO :)
         return
 
 
-def librosActivos(libros): #8 COMPLETADO :)
+def librosActivos(libros):
+    """
+    Recibe el diccionario "Libros" y devuelve un listado de libros que tengan el campo "Activo" con valor True.
+    """
     encontrados = False
     for idLibro, datos in libros.items():
         if datos["activo"]:
@@ -312,7 +330,11 @@ def librosActivos(libros): #8 COMPLETADO :)
         print("No hay libros activos para listar.")
     return
 
-def buscarLibrosPorAutor(libros):           # 9 COMPLETADO :)
+def buscarLibrosPorAutor(libros):
+    """
+    Recibe por parametro el diccionario libros y por teclado el autor a buscar.
+    Devuelve un listado de los libros que coinciden con sus autores.
+    """
     autorBuscado = input("Ingrese el nombre del autor a buscar: ").strip().lower()
     encontrados = False
 
@@ -337,7 +359,11 @@ def buscarLibrosPorAutor(libros):           # 9 COMPLETADO :)
 
 
 
-def buscarLibrosPorCategoria(libros):      # 10 COMPLETADO :)
+def buscarLibrosPorCategoria(libros):
+    """
+    Recibe por parametro el diccionario libros y por teclado la categoria a buscar.
+    Devuelve un listado de los libros que coinciden con la categoria.
+    """
     categoria = input("Ingrese la categoría a buscar: ").strip().lower()
     encontrados = False
 
