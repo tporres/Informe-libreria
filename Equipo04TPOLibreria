@@ -257,7 +257,7 @@ def listarPrestamosAtrasados(prestamos, alumnos):
         datosPrestamo = prestamos[idPrestamo]
         fechaDevolucion = datetime.strptime(datosPrestamo["fechaDevolucion"], "%Y.%m.%d %H.%M.%S")
 
-        if fechaDevolucion < fechaActual:
+        if fechaDevolucion < fechaActual and datosPrestamo.get("Devuelto") == False:
             idAlumno = datosPrestamo["IdAlumno"]
             nombreAlumno = alumnos[idAlumno]["nombre"] + " " + alumnos[idAlumno]["apellido"]
             diasAtraso = (fechaActual - fechaDevolucion).days
