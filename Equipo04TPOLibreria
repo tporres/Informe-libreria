@@ -19,13 +19,11 @@ from datetime import datetime
 # FUNCIONES
 #----------------------------------------------------------------------------------------------
 # FUNCIONES PARA GESTIONAR ALUMNOS
-def ingresoAlumno(alumnos): #1 remover except y try hasta proxima entrega
+def ingresoAlumno(alumnos):
     print("---------------------------")
     print("Ingreso de nuevo Alumno")
     print("---------------------------")
- 
-    copiaAlumnos = alumnos.copy()
-    
+
     nombre = input("Nombre: ").strip()
     apellido = input("Apellido: ").strip()
     direccion = input("Dirección: ").strip()
@@ -34,16 +32,14 @@ def ingresoAlumno(alumnos): #1 remover except y try hasta proxima entrega
     telefono1 = input("Telefono 1: ").strip()
     telefono2 = input("Telefono 2: ").strip()
     telefono3 = input("Telefono 3: ").strip()
-    
-    # Generación de nuevo ID
-    if not copiaAlumnos:
+
+    if not alumnos:
         nuevo_id = "A0001"
     else:
         ultimo_id = alumnos[-1]["IdAlumno"]
         numero = int(ultimo_id[1:]) + 1
         nuevo_id = f"A{numero:04d}"
 
-    # Crear el diccionario del alumno
     alumno = {
         "IdAlumno": nuevo_id,
         "activo": True,
@@ -57,12 +53,9 @@ def ingresoAlumno(alumnos): #1 remover except y try hasta proxima entrega
         "telefono3": telefono3
     }
 
-    # Agregar a la lista
-    copiaAlumnos.append(alumno)
-
+    alumnos.append(alumno)
     print(f"\n El alumno {nombre} {apellido} (ID: {nuevo_id}) fue agregado con éxito.\n")
 
-    return copiaAlumnos
 def modificar_alumno(id_alumno, nuevos_datos): #2
     for alumno in alumnos:
         if alumno["IdAlumno"] == id_alumno:
