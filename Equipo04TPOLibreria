@@ -746,7 +746,8 @@ def main():
                     listarPrestamosMesActual(Prestamos)
                     
                 elif opcionSubmenu == "2":   # Opción 2 del submenú
-                    resumen_anual_prestamos(anio)
+                    año = input("Ingrese el año a realizar el resumen: ")
+                    resumen_anual_prestamos_cantidad_tabla(Libros, Prestamos, año)
                 
                 elif opcionSubmenu == "3":   # Opción 3 del submenú
                     año = input("Ingrese el año a realizar el resumen: ")
