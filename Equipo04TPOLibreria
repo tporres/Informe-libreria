@@ -63,7 +63,7 @@ def ingresoAlumno(alumnos):
 
     alumnos[nuevoId] = alumno  # Se agrega al diccionario original
 
-    print(f"\n El libro '{nombre}' (ID: {nuevoId}) fue agregado con éxito.\n")
+    print(f"\n El alumno '{nombre}' (ID: {nuevoId}) fue agregado con éxito.\n")
 
 def modificar_alumno(alumnos):
     """
