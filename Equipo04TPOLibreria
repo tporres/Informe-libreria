@@ -686,7 +686,7 @@ def main():
                     opciones = 2
                     print()
                     print("---------------------------")
-                    print("MENÚ PRINCIPAL > INFORMES")
+                    print("MENÚ PRINCIPAL > PRESTAMOS")
                     print("---------------------------")
                     print("[1] Registrar Prestamo")
                     print("[2] Devolver Prestamo")
