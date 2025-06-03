@@ -222,13 +222,58 @@ def ingresoLibros(libros):  # libros es un diccionario
 
     print(f"\n El libro '{nombre}' (ID: {nuevoId}) fue agregado con éxito.\n")
 
-def modificar_libro(id_libro, nuevos_datos): #6
-    for libro in libros:
-        if libro["IdLibro"] == id_libro:
-            libro.update(nuevos_datos)
-            print(f"Libro {id_libro} modificado exitosamente.")
-            return
-    print(f"Libro {id_libro} no encontrado.")
+def modificar_libro(libros):
+    """
+    Permite modificar los atributos de un libro existente.
+    """
+    print("\n=== Modificar Libro ===")
+    print("Libros disponibles:")
+    for id_lib, datos in libros.items():
+        print(f"{id_lib}: {datos['nombre']}")
+    id_libro = input("Ingrese el ID del libro a modificar: ").strip()
+    if id_libro not in libros:
+        print("ID de libro no válido.")
+        return
+
+    libro = libros[id_libro]
+    print("\nDeje en blanco para no modificar ese campo.")
+
+    nombre = input(f"Nombre actual ({libro['nombre']}): ").strip()
+    editorial = input(f"Editorial actual ({libro['editorial']}): ").strip()
+    categoria = input(f"Categoría actual ({libro['categoria']}): ").strip()
+    stock = input(f"Stock actual ({libro['stock']}): ").strip()
+    costo = input(f"Costo actual ({libro['costo']}): ").strip()
+    activo = input(f"¿Activo? (actual: {libro['activo']}, s/n): ").strip().lower()
+
+    autor1 = input(f"Autor 1 actual ({libro['autores']['autor1']}): ").strip()
+    autor2 = input(f"Autor 2 actual ({libro['autores']['autor2']}): ").strip()
+    autor3 = input(f"Autor 3 actual ({libro['autores']['autor3']}): ").strip()
+
+    # Solo actualiza si el campo no está vacío
+    if nombre:
+        libro['nombre'] = nombre
+    if editorial:
+        libro['editorial'] = editorial
+    if categoria:
+        libro['categoria'] = categoria
+    if stock and stock.isdigit():
+        libro['stock'] = int(stock)
+    if costo:
+        try_float = costo.replace(',', '.')
+        if try_float.replace('.', '', 1).isdigit():
+            libro['costo'] = float(try_float)
+    if activo:
+        libro['activo'] = (activo == "s")
+
+    if autor1:
+        libro['autores']['autor1'] = autor1
+    if autor2:
+        libro['autores']['autor2'] = autor2
+    if autor3:
+        libro['autores']['autor3'] = autor3
+
+    print("\nLibro modificado exitosamente.")
+
 
 
 def eliminarLibro(libros):  #7 COMPLETADO :)
@@ -707,7 +752,7 @@ def main():
                     ingresoLibros(Libros)
                     
                 elif opcionSubmenu == "2":   # Opción 2 del submenú, accede a modificar libro
-                    modificar_libro(id_libro, nuevos_datos)
+                    modificar_libro(Libros)
                 
                 elif opcionSubmenu == "3":   # Opción 3 del submenú, permite eliminar logicamente un libro
                     eliminarLibro(Libros)
