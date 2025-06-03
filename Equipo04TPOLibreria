@@ -19,6 +19,50 @@ from datetime import datetime
 # FUNCIONES
 #----------------------------------------------------------------------------------------------
 # FUNCIONES PARA GESTIONAR ALUMNOS
+def ingresoAlumno(alumnos): #1 remover except y try hasta proxima entrega
+    print("---------------------------")
+    print("Ingreso de nuevo Alumno")
+    print("---------------------------")
+ 
+    copiaAlumnos = alumnos.copy()
+    
+    nombre = input("Nombre: ").strip()
+    apellido = input("Apellido: ").strip()
+    direccion = input("Dirección: ").strip()
+    email = input("Email: ").strip()
+    carrera = input("Carrera de estudio: ").strip()
+    telefono1 = input("Telefono 1: ").strip()
+    telefono2 = input("Telefono 2: ").strip()
+    telefono3 = input("Telefono 3: ").strip()
+    
+    # Generación de nuevo ID
+    if not copiaAlumnos:
+        nuevo_id = "A0001"
+    else:
+        ultimo_id = alumnos[-1]["IdAlumno"]
+        numero = int(ultimo_id[1:]) + 1
+        nuevo_id = f"A{numero:04d}"
+
+    # Crear el diccionario del alumno
+    alumno = {
+        "IdAlumno": nuevo_id,
+        "activo": True,
+        "nombre": nombre,
+        "apellido": apellido,
+        "direccion": direccion,
+        "email": email,
+        "carrera": carrera,
+        "telefono1": telefono1,
+        "telefono2": telefono2,
+        "telefono3": telefono3
+    }
+
+    # Agregar a la lista
+    copiaAlumnos.append(alumno)
+
+    print(f"\n El alumno {nombre} {apellido} (ID: {nuevo_id}) fue agregado con éxito.\n")
+
+    return copiaAlumnos
 def modificar_alumno(id_alumno, nuevos_datos): #2
     for alumno in alumnos:
         if alumno["IdAlumno"] == id_alumno:
@@ -76,6 +120,74 @@ def listar_alumnos(alumnos):  #4 COMPLETADO :)
         print("No hay alumnos activos para listar.")
         
 #FUNCIONES PARA GESTIONAR LIBROS
+def ingresoLibros(libros): #5 remover try y except hasta la proxima entrega
+    print("---------------------------")
+    print("Ingreso de nuevo libro")
+    print("---------------------------")
+    copiaLibros = libros.copy()
+
+    nombre = input("Nombre del libro: ").strip()
+    editorial = input("Editorial: ").strip()
+    categoria = input("Categoría: ").strip()
+
+    while True:
+        try:
+            stock = int(input("Cantidad en stock: "))
+            while stock < 0:
+                print("Error!!! Ingrese un numero positivo")
+                stock = int(input("Cantidad en stock: "))
+            break
+        except ValueError:
+            print("Por favor, ingrese un número entero.")
+
+    while True:
+        try:
+            costo = float(input("Costo de garantía: "))
+            break
+        except ValueError:
+            print("Ingrese un número válido (ej: 2500.0).")
+
+    autor1 = input("Autor principal: ").strip()
+    autor2 = input("Segundo autor: ").strip()
+    autor3 = input("Tercer autor: ").strip()
+
+    # Generación de nuevo ID
+    if not copiaLibros:
+        nuevo_id = "L0001"
+    else:
+        ultimo_id = copiaLibros[-1]["IdLibro"]
+        numero = int(ultimo_id[1:]) + 1
+        nuevo_id = f"L{numero:04d}"
+
+
+    if stock == 0:
+        activo = False
+    else:
+        activo = True
+
+
+    libro = {
+        "IdLibro": nuevo_id,
+        "activo": activo,
+        "stock": stock,
+        "nombre": nombre,
+        "editorial": editorial,
+        "categoria": categoria,
+        "costoGarantia": costo,
+        "autor1": autor1,
+        "autor2": autor2,
+        "autor3": autor3
+  
+    }
+
+    print(f"\n El libro {nombre} (ID: {nuevo_id}) fue agregado con éxito.\n")
+
+
+    # Agregar a la lista
+    copiaLibros.append(libro)
+
+    return copiaLibros
+
 def modificar_libro(id_libro, nuevos_datos): #6
     for libro in libros:
         if libro["IdLibro"] == id_libro:
@@ -161,6 +273,91 @@ def buscarLibrosPorCategoria(_libros):      # 10 COMPLETADO :)
         print(f"\nNo se encontraron libros en la categoría '{categoria}'.")
 
 #FUNCIONES PARA GESTIONAR PRESTAMOS
+
+def sumarDias(fecha, dias) :  #Funcion auxiliar para calcular los dias para devolver un prestamo
+    resultado = fecha
+    for i in range(dias):
+        resultado = datetime(
+            resultado.year,
+            resultado.month,
+            resultado.day,
+            resultado.hour,
+            resultado.minute,
+            resultado.second
+        )
+        resultado += datetime.resolution
+        while resultado.day == fecha.day:
+            resultado += datetime.resolution
+        fecha = resultado
+    return resultado
+        
+def registrarPrestamo(alumnos, libros, prestamos): #Remover try y except hasta la proxima entrega
+    print("\n--- Registro de nuevo préstamo ---")
+
+    idAlumno = input("ID del alumno (ej: A0001): ").strip()
+    alumno = None
+    for a in listaAlumnos:
+        if a["IdAlumno"] == idAlumno and a["activo"] == True:
+            alumno = a
+            break
+
+    if alumno is None:
+        print("Alumno no válido o inactivo.")
+        return
+
+    idLibro = input("ID del libro (ej: L0001): ").strip()
+    libro = None
+    for l in listaLibros:
+        if l["IdLibro"] == idLibro and l["activo"] == True and l["stock"] > 0:
+            libro = l
+            break
+
+    if libro is None:
+        print("Libro no válido, inactivo o sin stock.")
+        return
+
+    try:
+        tipoPrestamo = int(input("Tipo de préstamo (1 para semanal, 2 para 15 dias y 3 para 30 dias): ").strip())
+        if tipoPrestamo not in [1, 2,3]:
+            print("Tipo inválido.")
+            return
+    except ValueError:
+        print("Ingrese un número válido.")
+        return
+
+    try:
+        costoPrestamo = int(input("Costo del préstamo en pesos: ").strip())
+    except ValueError:
+        print("Ingrese un valor numérico para el costo.")
+        return
+
+    fechaPrestamo = datetime.now()
+    if tipoPrestamo == 1:
+        diasADevolver = 7
+    elif tipoPrestamo=2:
+        diasADevolver=15
+    else:
+        diasADevolver =30
+    
+    fechaDevolucion = sumarDias(fechaPrestamo, diasADevolver)
+
+    idPrestamo = f'P{fechaPrestamo.strftime("%Y.%m.%d %H.%M.%S")}'
+    nuevoPrestamo = {
+        "IdPrestamo": idPrestamo,
+        "IdAlumno": idAlumno,
+        "IdLibro": idLibro,
+        "tipoPrestamo": tipoPrestamo,
+        "costoPrestamo": costoPrestamo,
+        "fechaDevolucion": fechaDevolucion.strftime("%Y.%m.%d %H.%M.%S"),
+        "Devuelto":False
+    }
+
+    listaPrestamos.append(nuevoPrestamo)
+    libro["stock"] -= 1
+
+    print(f"✅ Préstamo registrado correctamente con ID: {idPrestamo}")
+    return
+
 def devolverPrestamo(prestamos):
     print("----- REGISTRAR DEVOLUCIÓN -----")
     id_prestamo = input("Ingrese el ID del préstamo (formato AAAA.MM.DD hh.mm.ss): ").strip()
@@ -399,7 +596,7 @@ def main():
                     break # No sale del programa, sino que vuelve al menú anterior
                 
                 elif opcionSubmenu == "1":   # Opción 1 del submenú, permite cargar un alumno
-                    ...
+                    ingresoAlumno(Alumnos)
                     
                 elif opcionSubmenu == "2":   # Opción 2 del submenú, permite modificar la informacion de un alumno
                     modificar_alumno(id_alumno, nuevos_datos)
@@ -444,8 +641,8 @@ def main():
                 if opcionSubmenu == "0": # Opción salir del submenú
                     break # No sale del programa, sino que vuelve al menú anterior
                 
-                elif opcionSubmenu == "1":   # Opción 1 del submenú
-                    ...
+                elif opcionSubmenu == "1":   # Opción 1 del submenú, permite ingresar un nuevo libro
+                    ingresoLibros(Libros)
                     
                 elif opcionSubmenu == "2":   # Opción 2 del submenú, accede a modificar libro
                     modificar_libro(id_libro, nuevos_datos)
@@ -492,8 +689,7 @@ def main():
                     break # No sale del programa, sino que vuelve al menú anterior
                 
                 elif opcionSubmenu == "1":   # Opción 1 del submenú
-                    ...
-                    
+                    registrarPrestamo(Alumnos,Libros,Prestamos)
                 elif opcionSubmenu == "2":   # Opción 2 del submenú
                     devolverPrestamo(Prestamos)
                 
