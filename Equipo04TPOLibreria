@@ -13,7 +13,7 @@ Pendientes:
 #----------------------------------------------------------------------------------------------
 # MÓDULOS
 #----------------------------------------------------------------------------------------------
-from datetime import datetime
+from datetime import datetime, timedelta
 
 #----------------------------------------------------------------------------------------------
 # FUNCIONES
@@ -59,13 +59,15 @@ def ingresoAlumno(alumnos):
         }
 
     }
-
+    
 
     alumnos[nuevoId] = alumno  # Se agrega al diccionario original
 
     print(f"\n El alumno '{nombre}' (ID: {nuevoId}) fue agregado con éxito.\n")
+    
+    return
 
-def modificar_alumno(alumnos):
+def modificarAlumno(alumnos):
     """
     Permite modificar los atributos de un alumno existente.
     """
@@ -110,6 +112,7 @@ def modificar_alumno(alumnos):
         alumno['telefonos']['telefono3'] = telefono3
 
     print("\nAlumno modificado exitosamente.")
+    return
 
 
 def eliminarAlumno(_alumnos): #3 COMPLETADO
@@ -145,7 +148,7 @@ def eliminarAlumno(_alumnos): #3 COMPLETADO
     return _alumnos
 
 
-def listar_alumnos(alumnos):  #4 COMPLETADO :)
+def listarAlumnos(alumnos):  #4 COMPLETADO :)
     encontrados = False
     for legajo, datos in alumnos.items():
         if datos["activo"]:
@@ -159,6 +162,7 @@ def listar_alumnos(alumnos):  #4 COMPLETADO :)
             print("-" * 30)
     if not encontrados:
         print("No hay alumnos activos para listar.")
+    return
         
 #FUNCIONES PARA GESTIONAR LIBROS
 def ingresoLibros(libros):  # libros es un diccionario
@@ -221,8 +225,9 @@ def ingresoLibros(libros):  # libros es un diccionario
     libros[nuevoId] = libro  # Se agrega al diccionario original
 
     print(f"\n El libro '{nombre}' (ID: {nuevoId}) fue agregado con éxito.\n")
+    return
 
-def modificar_libro(libros):
+def modificarLibro(libros):
     """
     Permite modificar los atributos de un libro existente.
     """
@@ -242,7 +247,7 @@ def modificar_libro(libros):
     editorial = input(f"Editorial actual ({libro['editorial']}): ").strip()
     categoria = input(f"Categoría actual ({libro['categoria']}): ").strip()
     stock = input(f"Stock actual ({libro['stock']}): ").strip()
-    costo = input(f"Costo actual ({libro['costo']}): ").strip()
+    costo = float(input(f"Costo actual ({libro['costo']}): ").strip())
     activo = input(f"¿Activo? (actual: {libro['activo']}, s/n): ").strip().lower()
 
     autor1 = input(f"Autor 1 actual ({libro['autores']['autor1']}): ").strip()
@@ -259,9 +264,7 @@ def modificar_libro(libros):
     if stock and stock.isdigit():
         libro['stock'] = int(stock)
     if costo:
-        try_float = costo.replace(',', '.')
-        if try_float.replace('.', '', 1).isdigit():
-            libro['costo'] = float(try_float)
+            libro['costo'] = float(costo)
     if activo:
         libro['activo'] = (activo == "s")
 
@@ -273,7 +276,7 @@ def modificar_libro(libros):
         libro['autores']['autor3'] = autor3
 
     print("\nLibro modificado exitosamente.")
-
+    return
 
 
 def eliminarLibro(libros):  #7 COMPLETADO :)
@@ -307,8 +310,9 @@ def librosActivos(libros): #8 COMPLETADO :)
 
     if not encontrados:
         print("No hay libros activos para listar.")
+    return
 
-def buscar_libros_por_autor(libros):           # 9 COMPLETADO :)
+def buscarLibrosPorAutor(libros):           # 9 COMPLETADO :)
     autor_buscado = input("Ingrese el nombre del autor a buscar: ").strip().lower()
     encontrados = False
 
@@ -329,6 +333,7 @@ def buscar_libros_por_autor(libros):           # 9 COMPLETADO :)
 
     if not encontrados:
         print(f"No se encontraron libros para el autor '{autor_buscado}'.")
+    return
 
 
 
@@ -350,6 +355,7 @@ def buscarLibrosPorCategoria(_libros):      # 10 COMPLETADO :)
 
     if not encontrados:
         print(f"\nNo se encontraron libros en la categoría '{categoria}'.")
+    return
 
 #FUNCIONES PARA GESTIONAR PRESTAMOS
 
@@ -370,17 +376,11 @@ def sumarDias(fecha, dias) :  #Funcion auxiliar para calcular los dias para devo
         fecha = resultado
     return resultado
         
-from datetime import datetime
-
-
-from datetime import datetime
-
-from datetime import datetime, timedelta
 
 def sumarDias(fecha, dias):
     return fecha + timedelta(days=dias)
 
-from datetime import datetime
+
 
 def registrarPrestamo(alumnos, libros, prestamos):
     print("\n--- Registro de nuevo préstamo ---")
@@ -418,7 +418,7 @@ def registrarPrestamo(alumnos, libros, prestamos):
 
     fechaDevolucion = sumarDias(fechaPrestamo, diasADevolver)
 
-    idPrestamo = f'P{fechaPrestamo.strftime("%Y.%m.%d %H.%M.%S")}'
+    idPrestamo = {fechaPrestamo.strftime("%Y.%m.%d %H.%M.%S")}
     nuevoPrestamo = {
         "IdPrestamo": idPrestamo,
         "IdAlumno": idAlumno,
@@ -434,6 +434,7 @@ def registrarPrestamo(alumnos, libros, prestamos):
 
     print(f"✅ Préstamo registrado correctamente con ID: {idPrestamo}")
     print(nuevoPrestamo)
+    return
 
 
 
@@ -451,6 +452,7 @@ def devolverPrestamo(prestamos):
             print("La devolución fue registrada correctamente.")
     else:
         print("No se encontró un préstamo con ese ID.")
+    return
 
 
 #-------------------------------
@@ -461,22 +463,23 @@ def devolverPrestamo(prestamos):
 
 
 def listarPrestamosMesActual(prestamos): #11 COMPLETADO
-    tipo_dict = {1: "Semanal", 2: "15 días", 3: "Mensual"}
+    tipoDict = {1: "Semanal", 2: "15 días", 3: "Mensual"}
     hoy = datetime.now()
 
     print(f"{'Prestamo':<20} {'Alumno':<8} {'Libro':<6} {'TipoPrestamo':<12} {'FechaDevolucion':<20} {'Devuelto':<8} {'PrecioGarantía':>15}")
     print("-" * 100)
 
-    for fecha_str, datos in prestamos.items():
-        fecha = datetime.strptime(fecha_str, "%Y.%m.%d %H.%M.%S")
+    for fechaStr, datos in prestamos.items():
+        fecha = datetime.strptime(fechaStr, "%Y.%m.%d %H.%M.%S")
         if fecha.year == hoy.year and fecha.month == hoy.month:
-            tipo_texto = tipo_dict.get(datos["tipoPrestamo"], "Desconocido")
+            tipoTexto = tipoDict.get(datos["tipoPrestamo"], "Desconocido")
             precio = f"{datos['costoPrestamo']:,.2f}"
-            print(f"{fecha_str:<20} {datos['IdAlumno']:<8} {datos['IdLibro']:<6} {tipo_texto:<12} {datos['fechaDevolucion']:<20} {str(datos['Devuelto']):<8} {precio:>15}")
+            print(f"{fechaStr:<20} {datos['IdAlumno']:<8} {datos['IdLibro']:<6} {tipoTexto:<12} {datos['fechaDevolucion']:<20} {str(datos['Devuelto']):<8} {precio:>15}")
+    return
 
 
 
-def resumen_anual_prestamos_cantidad_tabla(libros, prestamos, año):  #12 COMPLETADO
+def resumenAnualPrestamosCantidadTabla(libros, prestamos, año):  #12 COMPLETADO
     """
     Genera un resumen anual de cantidad de préstamos por libro, en formato de tabla mensual.
     """
@@ -490,13 +493,13 @@ def resumen_anual_prestamos_cantidad_tabla(libros, prestamos, año):  #12 COMPLE
         resumen[id_libro] = [0] * 12
 
     # Procesar préstamos
-    for fecha_prestamo, datos in prestamos.items():
-        año_prestamo, mes_prestamo = fecha_prestamo.split('.')[:2]
-        if año_prestamo == año:
-            id_libro = datos["IdLibro"]
-            mes_idx = int(mes_prestamo) - 1  # 0-indexed
-            if id_libro in resumen:
-                resumen[id_libro][mes_idx] += 1
+    for fechaPrestamo, datos in prestamos.items():
+        añoPrestamo, mesPrestamo = fechaPrestamo.split('.')[:2]
+        if añoPrestamo == año:
+            idLibro = datos["IdLibro"]
+            mesIdx = int(mesPrestamo) - 1  # 0-indexed
+            if idLibro in resumen:
+                resumen[idLibro][mesIdx] += 1
 
     # Imprimir encabezado
     print(f"\n{'Producto':<25}", end="")
@@ -505,8 +508,8 @@ def resumen_anual_prestamos_cantidad_tabla(libros, prestamos, año):  #12 COMPLE
     print()
 
     # Imprimir filas por libro, con salto de línea entre filas
-    for id_libro, valores in resumen.items():
-        nombre = libros[id_libro]["nombre"][:23]
+    for idLibro, valores in resumen.items():
+        nombre = libros[idLibro]["nombre"][:23]
         print(f"{nombre:<25}", end="")
         for v in valores:
             print(f"{v:>9}", end="")
@@ -515,13 +518,13 @@ def resumen_anual_prestamos_cantidad_tabla(libros, prestamos, año):  #12 COMPLE
     # (Opcional) Totales por mes
     print(f"{'TOTAL':<25}", end="")
     for i in range(12):
-        total_mes = sum(resumen[libro][i] for libro in resumen)
-        print(f"{total_mes:>9}", end="")
+        totalMes = sum(resumen[libro][i] for libro in resumen)
+        print(f"{totalMes:>9}", end="")
     print("\n")
 
 
 
-def resumen_anual_prestamos_pesos_tabla(libros, prestamos, año):   #13 COMPLETADO
+def resumenAnualPrestamosPesosTabla(libros, prestamos, año):   #13 COMPLETADO
     """
     Genera un resumen anual de préstamos por libro en pesos, en formato de tabla mensual.
     """
@@ -531,18 +534,18 @@ def resumen_anual_prestamos_pesos_tabla(libros, prestamos, año):   #13 COMPLETA
     ]
     # Inicializar estructura: {id_libro: [0, 0, ..., 0] (12 meses)}
     resumen = {}
-    for id_libro, info in libros.items():
-        resumen[id_libro] = [0] * 12
+    for idLibro, info in libros.items():
+        resumen[idLibro] = [0] * 12
 
     # Procesar préstamos
-    for fecha_prestamo, datos in prestamos.items():
-        año_prestamo, mes_prestamo = fecha_prestamo.split('.')[:2]
-        if año_prestamo == año:
-            id_libro = datos["IdLibro"]
+    for fechaPrestamo, datos in prestamos.items():
+        añoPrestamo, mesPrestamo = fechaPrestamo.split('.')[:2]
+        if añoPrestamo == año:
+            idLibro = datos["IdLibro"]
             costo = datos["costoPrestamo"]
-            mes_idx = int(mes_prestamo) - 1  # 0-indexed
-            if id_libro in resumen:
-                resumen[id_libro][mes_idx] += costo
+            mesIdx = int(mesPrestamo) - 1  # 0-indexed
+            if idLibro in resumen:
+                resumen[idLibro][mesIdx] += costo
 
     # Imprimir encabezado
     print(f"\n{'Producto':<25}", end="")
@@ -551,8 +554,8 @@ def resumen_anual_prestamos_pesos_tabla(libros, prestamos, año):   #13 COMPLETA
     print()
 
     # Imprimir filas por libro, con salto de línea entre filas
-    for id_libro, valores in resumen.items():
-        nombre = libros[id_libro]["nombre"][:23]
+    for idLibro, valores in resumen.items():
+        nombre = libros[idLibro]["nombre"][:23]
         print(f"{nombre:<25}", end="")
         for v in valores:
             print(f"{v:>9}", end="")
@@ -561,9 +564,10 @@ def resumen_anual_prestamos_pesos_tabla(libros, prestamos, año):   #13 COMPLETA
     # (Opcional) Totales por mes
     print(f"{'TOTAL':<25}", end="")
     for i in range(12):
-        total_mes = sum(resumen[libro][i] for libro in resumen)
-        print(f"{total_mes:>9}", end="")
+        totalMes = sum(resumen[libro][i] for libro in resumen)
+        print(f"{totalMes:>9}", end="")
     print("\n")
+    return
 
 
 def listarPrestamosAtrasados(prestamos, alumnos):  #14 COMPLETADO
@@ -706,14 +710,14 @@ def main():
                     ingresoAlumno(Alumnos)
                     
                 elif opcionSubmenu == "2":   # Opción 2 del submenú, permite modificar la informacion de un alumno
-                    modificar_alumno(Alumnos)
+                    modificarAlumno(Alumnos)
                 
                 elif opcionSubmenu == "3":   # Opción 3 del submenú, permite realizar un borrado logico de un alumno
                     
                     eliminarAlumno(Alumnos)
                 
                 elif opcionSubmenu == "4":   # Opción 4 del submenú, muestra un listado de los alumnos activos
-                    listar_alumnos(Alumnos)
+                    listarAlumnos(Alumnos)
 
                 input("\nPresione ENTER para volver al menú.") # Pausa entre opciones
                 print("\n\n")
@@ -752,7 +756,7 @@ def main():
                     ingresoLibros(Libros)
                     
                 elif opcionSubmenu == "2":   # Opción 2 del submenú, accede a modificar libro
-                    modificar_libro(Libros)
+                    modificarLibro(Libros)
                 
                 elif opcionSubmenu == "3":   # Opción 3 del submenú, permite eliminar logicamente un libro
                     eliminarLibro(Libros)
@@ -761,7 +765,7 @@ def main():
                     librosActivos(Libros)
                     
                 elif opcionSubmenu == "5":   # Opción 5 el submenú, muestra un listado de libros segun su autor
-                    buscar_libros_por_autor(Libros)
+                    buscarLibrosPorAutor(Libros)
                 
                 elif opcionSubmenu == "6":   # Opción 6 del submenú, muestra un listado de libros segun su categoria
                     buscarLibrosPorCategoria(Libros)
@@ -835,11 +839,11 @@ def main():
                     
                 elif opcionSubmenu == "2":   # Opción 2 del submenú
                     año = input("Ingrese el año a realizar el resumen: ")
-                    resumen_anual_prestamos_cantidad_tabla(Libros, Prestamos, año)
+                    resumenAnualPrestamosCantidadTabla(Libros, Prestamos, año)
                 
                 elif opcionSubmenu == "3":   # Opción 3 del submenú
                     año = input("Ingrese el año a realizar el resumen: ")
-                    resumen_anual_prestamos_pesos_tabla(Libros, Prestamos, año)
+                    resumenAnualPrestamosPesosTabla(Libros, Prestamos, año)
                 
                 elif opcionSubmenu == "4":   # Opción 4 del submenú
                     listarPrestamosAtrasados(Prestamos, Alumnos)
@@ -852,3 +856,5 @@ def main():
 
 # Punto de entrada al programa
 main()
+
+
