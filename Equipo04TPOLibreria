@@ -289,7 +289,7 @@ def registrarPrestamo(alumnos, libros, prestamos): #Remover try y except hasta l
 
     idAlumno = input("ID del alumno (ej: A0001): ").strip()
     alumno = None
-    for a in listaAlumnos:
+    for a in alumnos:
         if a["IdAlumno"] == idAlumno and a["activo"] == True:
             alumno = a
             break
