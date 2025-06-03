@@ -4,7 +4,7 @@ Título: TPO Entrega 1
 Fecha:  03/06/2025
 Autor:  Grupo 04
 
-Descripción:
+Descripción: Se trata de un sistema informático para una biblioteca de organización educativa que da préstamos de libros a alumnos.
 
 Pendientes:
 -----------------------------------------------------------------------------------------------
@@ -358,26 +358,9 @@ def buscarLibrosPorCategoria(libros):      # 10 COMPLETADO :)
     return
 
 #FUNCIONES PARA GESTIONAR PRESTAMOS
+       
 
-def sumarDias(fecha, dias) :  #Funcion auxiliar para calcular los dias para devolver un prestamo
-    resultado = fecha
-    for i in range(dias):
-        resultado = datetime(
-            resultado.year,
-            resultado.month,
-            resultado.day,
-            resultado.hour,
-            resultado.minute,
-            resultado.second
-        )
-        resultado += datetime.resolution
-        while resultado.day == fecha.day:
-            resultado += datetime.resolution
-        fecha = resultado
-    return resultado
-        
-
-def sumarDias(fecha, dias):
+def sumarDias(fecha, dias): #Funcion auxiliar para calcular los dias para devolver un prestamo
     return fecha + timedelta(days=dias)
 
 
