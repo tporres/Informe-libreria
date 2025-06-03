@@ -18,7 +18,9 @@ from datetime import datetime
 #----------------------------------------------------------------------------------------------
 # FUNCIONES
 #----------------------------------------------------------------------------------------------
+
 # FUNCIONES PARA GESTIONAR ALUMNOS
+
 def ingresoAlumno(alumnos):
     print("---------------------------")
     print("Ingreso de nuevo Alumno")
@@ -34,27 +36,34 @@ def ingresoAlumno(alumnos):
     telefono3 = input("Telefono 3: ").strip()
 
     if not alumnos:
-        nuevo_id = "A0001"
+        nuevoId = "1001"
     else:
-        ultimo_id = alumnos[-1]["IdAlumno"]
-        numero = int(ultimo_id[1:]) + 1
-        nuevo_id = f"A{numero:04d}"
+        idExistentes = [int(k) for k in alumnos.keys()]
+        nuevoNum = max(idExistentes) + 1
+        nuevoId = str(nuevoNum)
+
 
     alumno = {
-        "IdAlumno": nuevo_id,
+        "IdAlumno": nuevoId,
         "activo": True,
         "nombre": nombre,
         "apellido": apellido,
         "direccion": direccion,
         "email": email,
         "carrera": carrera,
-        "telefono1": telefono1,
-        "telefono2": telefono2,
-        "telefono3": telefono3
+        "telefonos":
+        {
+            "telefono1": telefono1,
+            "telefono2": telefono2,
+            "telefono3": telefono3
+        }
+
     }
 
-    alumnos.append(alumno)
-    print(f"\n El alumno {nombre} {apellido} (ID: {nuevo_id}) fue agregado con éxito.\n")
+
+    alumnos[nuevoId] = alumno  # Se agrega al diccionario original
+
+    print(f"\n El libro '{nombre}' (ID: {nuevoId}) fue agregado con éxito.\n")
 
 def modificar_alumno(id_alumno, nuevos_datos): #2
     for alumno in alumnos:
