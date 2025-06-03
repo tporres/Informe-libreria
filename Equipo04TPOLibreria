@@ -65,13 +65,52 @@ def ingresoAlumno(alumnos):
 
     print(f"\n El libro '{nombre}' (ID: {nuevoId}) fue agregado con éxito.\n")
 
-def modificar_alumno(id_alumno, nuevos_datos): #2
-    for alumno in alumnos:
-        if alumno["IdAlumno"] == id_alumno:
-            alumno.update(nuevos_datos)
-            print(f"Alumno {id_alumno} modificado exitosamente.")
-            return
-    print(f"Alumno {id_alumno} no encontrado.")
+def modificar_alumno(alumnos):
+    """
+    Permite modificar los atributos de un alumno existente.
+    """
+    print("\n=== Modificar Alumno ===")
+    print("Alumnos disponibles:")
+    for id_al, datos in alumnos.items():
+        print(f"{id_al}: {datos['nombre']} {datos['apellido']}")
+    id_alumno = input("Ingrese el ID del alumno a modificar: ").strip()
+    if id_alumno not in alumnos:
+        print("ID de alumno no válido.")
+        return
+
+    alumno = alumnos[id_alumno]
+    print("\nDeje en blanco para no modificar ese campo.")
+
+    nombre = input(f"Nombre actual ({alumno['nombre']}): ").strip()
+    apellido = input(f"Apellido actual ({alumno['apellido']}): ").strip()
+    direccion = input(f"Dirección actual ({alumno['direccion']}): ").strip()
+    email = input(f"Email actual ({alumno['email']}): ").strip()
+    carrera = input(f"Carrera actual ({alumno['carrera']}): ").strip()
+
+    telefono1 = input(f"Teléfono 1 actual ({alumno['telefonos']['telefono1']}): ").strip()
+    telefono2 = input(f"Teléfono 2 actual ({alumno['telefonos']['telefono2']}): ").strip()
+    telefono3 = input(f"Teléfono 3 actual ({alumno['telefonos']['telefono3']}): ").strip()
+
+    # Solo actualiza si el campo no está vacío
+    if nombre:
+        alumno['nombre'] = nombre
+    if apellido:
+        alumno['apellido'] = apellido
+    if direccion:
+        alumno['direccion'] = direccion
+    if email:
+        alumno['email'] = email
+    if carrera:
+        alumno['carrera'] = carrera
+    if telefono1:
+        alumno['telefonos']['telefono1'] = telefono1
+    if telefono2:
+        alumno['telefonos']['telefono2'] = telefono2
+    if telefono3:
+        alumno['telefonos']['telefono3'] = telefono3
+
+    print("\nAlumno modificado exitosamente.")
+
 
 def eliminarAlumno(_alumnos): #3 COMPLETADO
     """
@@ -618,7 +657,7 @@ def main():
                     ingresoAlumno(Alumnos)
                     
                 elif opcionSubmenu == "2":   # Opción 2 del submenú, permite modificar la informacion de un alumno
-                    modificar_alumno(id_alumno, nuevos_datos)
+                    modificar_alumno(Alumnos)
                 
                 elif opcionSubmenu == "3":   # Opción 3 del submenú, permite realizar un borrado logico de un alumno
                     
