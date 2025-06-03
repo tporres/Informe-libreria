@@ -681,7 +681,6 @@ def main():
                 print("\n\n")
         
         elif opcionMenuPrincipal == "3":   # Opción 3 del menú principal, accede a registrar prestamo
-            elif opcionMenuPrincipal == "3":  # Opción 3 del menú principal, accede a registrar prestamo y devolver prestamo
             while True:
                 while True:
                     opciones = 2
