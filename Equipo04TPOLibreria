@@ -364,7 +364,14 @@ def devolverPrestamo(prestamos):
     else:
         print("No se encontró un préstamo con ese ID.")
 
+
+#-------------------------------
+
 #FUNCIONES PARA INFORMES 
+
+#-------------------------------
+
+
 def listarPrestamosMesActual(prestamos): #11 COMPLETADO
     tipo_dict = {1: "Semanal", 2: "15 días", 3: "Mensual"}
     hoy = datetime.now()
@@ -381,80 +388,97 @@ def listarPrestamosMesActual(prestamos): #11 COMPLETADO
 
 
 
-def resumen_anual_prestamos(anio):  #12
+def resumen_anual_prestamos_cantidad_tabla(libros, prestamos, año):  #12 COMPLETADO
+    """
+    Genera un resumen anual de cantidad de préstamos por libro, en formato de tabla mensual.
+    """
+    meses = [
+        "ENE", "FEB", "MAR", "ABR", "MAY", "JUN",
+        "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"
+    ]
+    # Inicializar estructura: {id_libro: [0, 0, ..., 0] (12 meses)}
     resumen = {}
-    for prestamo in prestamos:
-        anio_prestamo = prestamo["IdPrestamo"].split('.')[0]
-        if anio_prestamo == str(anio):
-            libro_id = prestamo["IdLibro"]
-            resumen[libro_id] = resumen.get(libro_id, 0) + 1
+    for id_libro, info in libros.items():
+        resumen[id_libro] = [0] * 12
 
-    print(f"Resumen de préstamos del año {anio}:")
-    for libro_id, cantidad in resumen.items():
-        libro_nombre = next((libro["nombre"] for libro in libros if libro["IdLibro"] == libro_id), "Desconocido")
-        print(f"{libro_nombre} (ID: {libro_id}) - {cantidad} préstamo(s)")
-        
-        
-def resumen_anual_prestamos_pesos(libros, prestamos, año): #13 COMPLETADO :) habria que hacer que el año se ingrese en la funcion
-    """
-    Genera un resumen anual de préstamos por libro en pesos.
-    
-    Args:
-        libros (dict): Diccionario con la información de los libros
-        prestamos (dict): Diccionario con la información de los préstamos
-        año (str): Año para el cual se desea el resumen (ej: "2024")
-    """
-    # Diccionario para almacenar los totales por libro
-    resumen = {}
-    
-    # Procesar cada préstamo
+    # Procesar préstamos
     for fecha_prestamo, datos in prestamos.items():
-        # Extraer el año del préstamo
-        año_prestamo = fecha_prestamo.split('.')[0]
-        
-        # Si el préstamo es del año solicitado
+        año_prestamo, mes_prestamo = fecha_prestamo.split('.')[:2]
+        if año_prestamo == año:
+            id_libro = datos["IdLibro"]
+            mes_idx = int(mes_prestamo) - 1  # 0-indexed
+            if id_libro in resumen:
+                resumen[id_libro][mes_idx] += 1
+
+    # Imprimir encabezado
+    print(f"\n{'Producto':<25}", end="")
+    for m in meses:
+        print(f"{m+'.'+año[-2:]:>9}", end="")
+    print()
+
+    # Imprimir filas por libro, con salto de línea entre filas
+    for id_libro, valores in resumen.items():
+        nombre = libros[id_libro]["nombre"][:23]
+        print(f"{nombre:<25}", end="")
+        for v in valores:
+            print(f"{v:>9}", end="")
+        print("\n")  # Salto de línea extra entre filas
+
+    # (Opcional) Totales por mes
+    print(f"{'TOTAL':<25}", end="")
+    for i in range(12):
+        total_mes = sum(resumen[libro][i] for libro in resumen)
+        print(f"{total_mes:>9}", end="")
+    print("\n")
+
+
+
+def resumen_anual_prestamos_pesos_tabla(libros, prestamos, año):   #13 COMPLETADO
+    """
+    Genera un resumen anual de préstamos por libro en pesos, en formato de tabla mensual.
+    """
+    meses = [
+        "ENE", "FEB", "MAR", "ABR", "MAY", "JUN",
+        "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"
+    ]
+    # Inicializar estructura: {id_libro: [0, 0, ..., 0] (12 meses)}
+    resumen = {}
+    for id_libro, info in libros.items():
+        resumen[id_libro] = [0] * 12
+
+    # Procesar préstamos
+    for fecha_prestamo, datos in prestamos.items():
+        año_prestamo, mes_prestamo = fecha_prestamo.split('.')[:2]
         if año_prestamo == año:
             id_libro = datos["IdLibro"]
             costo = datos["costoPrestamo"]
-            
-            # Si el libro no está en el resumen, inicializarlo
-            if id_libro not in resumen:
-                resumen[id_libro] = {
-                    "nombre": libros[id_libro]["nombre"],
-                    "total_prestamos": 0,
-                    "total_pesos": 0
-                }
-            
-            # Actualizar contadores
-            resumen[id_libro]["total_prestamos"] += 1
-            resumen[id_libro]["total_pesos"] += costo
-    
-    # Mostrar el resumen
-    print(f"\nResumen Anual de Préstamos {año}")
-    print("=" * 50)
-    
-    if not resumen:
-        print(f"No hay préstamos registrados para el año {año}")
-        return
-    
-    # Ordenar por total de pesos (de mayor a menor)
-    libros_ordenados = sorted(resumen.items(), 
-                            key=lambda x: x[1]["total_pesos"], 
-                            reverse=True)
-    
-    total_general = 0
-    for id_libro, datos in libros_ordenados:
-        print(f"\nLibro: {datos['nombre']}")
-        print(f"ID: {id_libro}")
-        print(f"Cantidad de préstamos: {datos['total_prestamos']}")
-        print(f"Total en pesos: ${datos['total_pesos']:,.2f}")
-        print("-" * 30)
-        total_general += datos["total_pesos"]
-    
-    print(f"\nTotal General: ${total_general:,.2f}")
+            mes_idx = int(mes_prestamo) - 1  # 0-indexed
+            if id_libro in resumen:
+                resumen[id_libro][mes_idx] += costo
 
-        
-def listarPrestamosAtrasados(prestamos, alumnos):
+    # Imprimir encabezado
+    print(f"\n{'Producto':<25}", end="")
+    for m in meses:
+        print(f"{m+'.'+año[-2:]:>9}", end="")
+    print()
+
+    # Imprimir filas por libro, con salto de línea entre filas
+    for id_libro, valores in resumen.items():
+        nombre = libros[id_libro]["nombre"][:23]
+        print(f"{nombre:<25}", end="")
+        for v in valores:
+            print(f"{v:>9}", end="")
+        print("\n")  # Salto de línea extra entre filas
+
+    # (Opcional) Totales por mes
+    print(f"{'TOTAL':<25}", end="")
+    for i in range(12):
+        total_mes = sum(resumen[libro][i] for libro in resumen)
+        print(f"{total_mes:>9}", end="")
+    print("\n")
+
+
+def listarPrestamosAtrasados(prestamos, alumnos):  #14 COMPLETADO
     fechaActual = datetime.now()
     print("Listado de préstamos atrasados al", fechaActual.strftime("%Y-%m-%d %H:%M:%S"))
     print("-" * 55)
