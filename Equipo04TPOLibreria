@@ -113,11 +113,10 @@ def listar_alumnos(alumnos):  #4 COMPLETADO :)
         print("No hay alumnos activos para listar.")
         
 #FUNCIONES PARA GESTIONAR LIBROS
-def ingresoLibros(libros): #5 remover try y except hasta la proxima entrega
+def ingresoLibros(libros):  # libros es un diccionario
     print("---------------------------")
     print("Ingreso de nuevo libro")
     print("---------------------------")
-    copiaLibros = libros.copy()
 
     nombre = input("Nombre del libro: ").strip()
     editorial = input("Editorial: ").strip()
@@ -127,7 +126,7 @@ def ingresoLibros(libros): #5 remover try y except hasta la proxima entrega
         try:
             stock = int(input("Cantidad en stock: "))
             while stock < 0:
-                print("Error!!! Ingrese un numero positivo")
+                print("Error!!! Ingrese un número positivo")
                 stock = int(input("Cantidad en stock: "))
             break
         except ValueError:
@@ -144,42 +143,36 @@ def ingresoLibros(libros): #5 remover try y except hasta la proxima entrega
     autor2 = input("Segundo autor: ").strip()
     autor3 = input("Tercer autor: ").strip()
 
-    # Generación de nuevo ID
-    if not copiaLibros:
-        nuevo_id = "L0001"
+    # Generación del nuevo ID (extrae el número más alto y suma 1)
+    if not libros:
+        nuevoId = "L001"
     else:
-        ultimo_id = copiaLibros[-1]["IdLibro"]
-        numero = int(ultimo_id[1:]) + 1
-        nuevo_id = f"L{numero:04d}"
+        ultimoId = [int(clave[1:]) for clave in libros.keys()]
+        nuevo_num = max(ultimoId) + 1
+        nuevoId = f"L{nuevo_num:03d}"
 
-
-    if stock == 0:
-        activo = False
-    else:
+    if stock > 0:
         activo = True
-
+    else:
+        activo = False
 
     libro = {
-        "IdLibro": nuevo_id,
         "activo": activo,
         "stock": stock,
         "nombre": nombre,
         "editorial": editorial,
         "categoria": categoria,
-        "costoGarantia": costo,
-        "autor1": autor1,
-        "autor2": autor2,
-        "autor3": autor3
-  
+        "autores": {
+            "autor1": autor1,
+            "autor2": autor2,
+            "autor3": autor3
+        },
+        "costoGarantia": costo
     }
 
-    print(f"\n El libro {nombre} (ID: {nuevo_id}) fue agregado con éxito.\n")
+    libros[nuevoId] = libro  # Se agrega al diccionario original
 
-
-    # Agregar a la lista
-    copiaLibros.append(libro)
-
-    return copiaLibros
+    print(f"\n El libro '{nombre}' (ID: {nuevoId}) fue agregado con éxito.\n")
 
 def modificar_libro(id_libro, nuevos_datos): #6
     for libro in libros:
