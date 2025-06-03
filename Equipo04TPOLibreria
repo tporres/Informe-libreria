@@ -175,21 +175,21 @@ def ingresoLibros(libros):  # libros es un diccionario
     categoria = input("Categoría: ").strip()
 
     while True:
-        try:
+        print("Por favor, ingrese un número entero.")        
+        stock = int(input("Cantidad en stock: "))
+        while stock < 0:
+            print("Error!!! Ingrese un número positivo")
             stock = int(input("Cantidad en stock: "))
-            while stock < 0:
-                print("Error!!! Ingrese un número positivo")
-                stock = int(input("Cantidad en stock: "))
-            break
-        except ValueError:
-            print("Por favor, ingrese un número entero.")
-
+        break
+        
     while True:
-        try:
+        print("Ingrese un número válido (ej: 2500.0).")
+        costo = float(input("Costo de garantía: "))
+        while costo <= 0:
+            print("Error,ingrese un número válido (ej: 2500.0).")
             costo = float(input("Costo de garantía: "))
-            break
-        except ValueError:
-            print("Ingrese un número válido (ej: 2500.0).")
+        break
+        
 
     autor1 = input("Autor principal: ").strip()
     autor2 = input("Segundo autor: ").strip()
@@ -305,6 +305,7 @@ def librosActivos(libros): #8 COMPLETADO :)
             print(f"Categoría: {datos['categoria']}")
             print(f"Stock: {datos['stock']}")
             print(f"Autor 1: {datos['autores']['autor1']}")
+            print(f"Costo de garantia por dia: {datos['costo']}")
             print("-" * 30)
 
     if not encontrados:
