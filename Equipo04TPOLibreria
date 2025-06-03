@@ -334,7 +334,7 @@ def registrarPrestamo(alumnos, libros, prestamos): #Remover try y except hasta l
     fechaPrestamo = datetime.now()
     if tipoPrestamo == 1:
         diasADevolver = 7
-    elif tipoPrestamo=2:
+    elif tipoPrestamo==2:
         diasADevolver=15
     else:
         diasADevolver =30
