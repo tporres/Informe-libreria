@@ -22,10 +22,15 @@ from datetime import datetime, timedelta
 # FUNCIONES PARA GESTIONAR ALUMNOS
 
 def ingresoAlumno(alumnos):
-
-    '''
-    Recibe por teclado los datos del alumno y carga los datos al diccionario "Alumnos" para su posterior uso.
-    '''
+    
+    """
+    Funcion para ingresar alumnos al sistema.
+    
+    PARÁMETROS:
+            Alumnos = Diccionario
+    SALIDA:
+            Mensaje informativo que el Alumno fue ingresado correctamente. Ademas se carga el Alumno ingresado en el diccionario "Alumnos".
+    """
     print("---------------------------")
     print("Ingreso de nuevo Alumno")
     print("---------------------------")
@@ -73,7 +78,13 @@ def ingresoAlumno(alumnos):
 
 def modificarAlumno(alumnos):
     """
-    Permite modificar los atributos de un alumno existente.
+    Funcion para modificar alumnos al sistema.
+    
+    PARÁMETROS:
+            Alumnos = Diccionario
+    SALIDA:
+            Mensaje informativo que el Alumno fue modificado correctamente junto con las modificaciones realizadas.
+            Ademas se actualiza el alumno ingresado en el diccionario "Alumnos".
     """
     print("\n=== Modificar Alumno ===")
     print("Alumnos disponibles:")
@@ -119,10 +130,14 @@ def modificarAlumno(alumnos):
     return
 
 
-def eliminarAlumno(alumnos): #3 COMPLETADO
+def eliminarAlumno(alumnos):
     """
-    Da de baja lógicamente a un alumno si existe y está activo.
-    Pide el ID hasta que sea un entero válido dentro del rango permitido (1000-9999).
+    Funcion para eliminar alumnos al sistema.
+    
+    PARÁMETROS:
+            Alumnos = Diccionario
+    SALIDA:
+            Mensaje informativo que el Alumno fue eliminado correctamente. Ademas se carga el Alumno eliminado en el diccionario "Alumnos".
     """
     while True:
         legajo = input("Ingrese el ID del alumno a eliminar (entre 1000 y 9999): ")
@@ -154,8 +169,12 @@ def eliminarAlumno(alumnos): #3 COMPLETADO
 
 def listarAlumnos(alumnos):
     """
-    Recibe el diccionario "Alumnos" y muestra un listado de todos los alumnos que tengan el valor de "Activo" como true.
-    Si no encuentra ningun registro que cumpla con la condicion, muestra un mensaje acorde.
+    Funcion para ingresar alumnos al sistema.
+    
+    PARÁMETROS:
+            Alumnos = Diccionario
+    SALIDA:
+            Listado de alumnos con campo "Activo" == True.
     """
     encontrados = False
     for legajo, datos in alumnos.items():
@@ -176,8 +195,14 @@ def listarAlumnos(alumnos):
 def ingresoLibros(libros):  # libros es un diccionario
 
     """
-    Se ingresan los datos del libro a cargar en el sistema por teclado y se guardan en el diccionario "Libros".
+    Funcion para ingresar libros al sistema.
+    
+    PARÁMETROS:
+            Libros = Diccionario
+    SALIDA:
+            Mensaje informativo que el libro fue ingresado correctamente. Ademas se carga el libro ingresado en el diccionario "Libros".
     """
+    
     print("---------------------------")
     print("Ingreso de nuevo libro")
     print("---------------------------")
@@ -241,7 +266,12 @@ def ingresoLibros(libros):  # libros es un diccionario
 
 def modificarLibro(libros):
     """
-    Permite modificar los atributos de un libro existente.
+    Funcion para modificar libros al sistema.
+    
+    PARÁMETROS:
+            Libros = Diccionario
+    SALIDA:
+            Mensaje informativo que el libro fue modificado correctamente. Ademas se carga el libro modificado en el diccionario "Libros".
     """
     print("\n=== Modificar Libro ===")
     print("Libros disponibles:")
@@ -292,7 +322,13 @@ def modificarLibro(libros):
 
 def eliminarLibro(libros):
     """
-    Recibe por teclado el ID del libro a eliminar y se actializa el campo "Activo" de True a False.
+    Funcion para Eliminar libros al sistema.
+    
+    PARÁMETROS:
+            Libros = Diccionario
+    SALIDA:
+            Mensaje informativo que el libro eliminado correctamente. Ademas se actualiza el valor del campo "activo" a False en el diccionario "Libros"
+            solamente en el registro con el idLibro ingresado por teclado.
     """
     idLibro = input("Ingrese el ID del libro que desea desactivar: ")
 
@@ -311,7 +347,12 @@ def eliminarLibro(libros):
 
 def librosActivos(libros):
     """
-    Recibe el diccionario "Libros" y devuelve un listado de libros que tengan el campo "Activo" con valor True.
+    Funcion para mostrar activos libros.
+    
+    PARÁMETROS:
+            Libros = Diccionario
+    SALIDA:
+            Listado de libros que cumplen con la condicion campo "Activo" sea True.
     """
     encontrados = False
     for idLibro, datos in libros.items():
@@ -331,10 +372,6 @@ def librosActivos(libros):
     return
 
 def buscarLibrosPorAutor(libros):
-    """
-    Recibe por parametro el diccionario libros y por teclado el autor a buscar.
-    Devuelve un listado de los libros que coinciden con sus autores.
-    """
     autorBuscado = input("Ingrese el nombre del autor a buscar: ").strip().lower()
     encontrados = False
 
@@ -631,11 +668,11 @@ def main():
     "2024.06.02 14.30.00": {"IdAlumno": "1002", "IdLibro": "L002", "tipoPrestamo": 2,"costoPrestamo": 120, "fechaDevolucion": "2025.06.17 14.30.00", "Devuelto": True},
     "2025.06.03 10.00.00": {"IdAlumno": "1003", "IdLibro": "L003", "tipoPrestamo": 3,"costoPrestamo": 200, "fechaDevolucion": "2025.07.03 10.00.00", "Devuelto": False},
     "2025.06.04 11.45.00": {"IdAlumno": "1004", "IdLibro": "L004", "tipoPrestamo": 1,"costoPrestamo": 180, "fechaDevolucion": "2025.06.11 11.45.00", "Devuelto": True},
-    "2025.06.05 13.20.00": {"IdAlumno": "1005", "IdLibro": "L005", "tipoPrestamo": 2,"costoPrestamo": 300, "fechaDevolucion": "2025.06.20 13.20.00", "Devuelto": False},
-    "2025.06.06 08.10.00": {"IdAlumno": "1006", "IdLibro": "L006", "tipoPrestamo": 3,"costoPrestamo": 450, "fechaDevolucion": "2025.07.06 08.10.00", "Devuelto": False},
+    "2024.06.05 13.20.00": {"IdAlumno": "1005", "IdLibro": "L005", "tipoPrestamo": 2,"costoPrestamo": 300, "fechaDevolucion": "2024.06.20 13.20.00", "Devuelto": False},
+    "2024.06.06 08.10.00": {"IdAlumno": "1006", "IdLibro": "L006", "tipoPrestamo": 3,"costoPrestamo": 450, "fechaDevolucion": "2024.07.06 08.10.00", "Devuelto": False},
     "2025.06.07 15.30.00": {"IdAlumno": "1007", "IdLibro": "L007", "tipoPrestamo": 1,"costoPrestamo": 170, "fechaDevolucion": "2025.06.14 15.30.00", "Devuelto": True},
     "2025.06.08 12.25.00": {"IdAlumno": "1008", "IdLibro": "L008", "tipoPrestamo": 2,"costoPrestamo": 220, "fechaDevolucion": "2025.06.23 12.25.00", "Devuelto": False},
-    "2025.06.09 09.00.00": {"IdAlumno": "1009", "IdLibro": "L009", "tipoPrestamo": 3,"costoPrestamo": 600, "fechaDevolucion": "2025.07.09 09.00.00", "Devuelto": False}
+    "2022.06.09 09.00.00": {"IdAlumno": "1009", "IdLibro": "L009", "tipoPrestamo": 3,"costoPrestamo": 600, "fechaDevolucion": "2022.07.09 09.00.00", "Devuelto": False}
 }
     Libros = {
     "L001": {"activo": True, "stock": 7, "nombre": "Cien Años de Soledad", "editorial": "Sudamericana", "categoria": "Novela", "autores": {"autor1": "Julio Cortázar", "autor2": "", "autor3": ""}, "costo": 350.0},
@@ -864,6 +901,7 @@ def main():
 
 # Punto de entrada al programa
 main()
+
 
 
 
