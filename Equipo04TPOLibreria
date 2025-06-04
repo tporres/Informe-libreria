@@ -347,10 +347,10 @@ def eliminarLibro(libros):
 
 def librosActivos(libros):
     """
-    Funcion para mostrar activos libros.
+    Funcion para mostrar los libros activos.
     
     PARÁMETROS:
-            Libros = Diccionario
+            libros = Diccionario con la informacion de los libros
     SALIDA:
             Listado de libros que cumplen con la condicion campo "Activo" sea True.
     """
@@ -371,7 +371,35 @@ def librosActivos(libros):
         print("No hay libros activos para listar.")
     return
 
-def buscarLibrosPorAutor(libros):
+def librosActivos(libros): #8 COMPLETADO :)
+    encontrados = False
+    for idLibro, datos in libros.items():
+        if datos["activo"]:
+            encontrados = True
+            print(f"ID del Libro: {idLibro}")
+            print(f"Nombre: {datos['nombre']}")
+            print(f"Editorial: {datos['editorial']}")
+            print(f"Categoría: {datos['categoria']}")
+            print(f"Stock: {datos['stock']}")
+            print(f"Autor 1: {datos['autores']['autor1']}")
+            print(f"Costo de garantia por dia: {datos['costo']}")
+            print("-" * 30)
+
+    if not encontrados:
+        print("No hay libros activos para listar.")
+    return
+
+def buscarLibrosPorAutor(libros):           #Funcion para buscar libros en base a su autor
+    
+    '''
+    Solicita un autor a buscar y luego imprime por pantalla un listado de los libros que coinciden con el autor solicitado
+    
+    PARAMETROS:
+    libros: Diccionario con la informacion de los libros
+    SALIDA:
+    imprime un listado con los libros cuya categoria coincide con el autor buscado, en caso de no haber encontrado ninguno informa que no hay libros con ese autor
+    '''
+        
     autorBuscado = input("Ingrese el nombre del autor a buscar: ").strip().lower()
     encontrados = False
 
@@ -396,11 +424,16 @@ def buscarLibrosPorAutor(libros):
 
 
 
-def buscarLibrosPorCategoria(libros):
-    """
-    Recibe por parametro el diccionario libros y por teclado la categoria a buscar.
-    Devuelve un listado de los libros que coinciden con la categoria.
-    """
+def buscarLibrosPorCategoria(libros):      #Funcion para buscar libros en base a su categoria
+    '''
+    Solicita una categoria a buscar y luego imprime por pantalla un listado de los libros que coinciden con la categoria solicitada
+    
+    PARAMETROS:
+    libros: Diccionario con la informacion de los libros
+    SALIDA:
+    imprime un listado con los libros cuya categoria coincide con la categoria buscada, en caso de no haber encontrado ninguno informa que no hay libros con esa categoria
+    '''
+    
     categoria = input("Ingrese la categoría a buscar: ").strip().lower()
     encontrados = False
 
@@ -428,7 +461,18 @@ def sumarDias(fecha, dias): #Funcion auxiliar para calcular los dias para devolv
 
 
 
-def registrarPrestamo(alumnos, libros, prestamos):
+def registrarPrestamo(alumnos, libros, prestamos): #Funcion para registrar un nuevo prestamo
+    '''
+    Permite registrar un nuevo prestamo, solicitando el idAlumno, idLibro y tipo de prestamo para calcular la fecha de devolucion y el costo del prestamo en base a
+    la cantidad de dias del prestamo y el costo de la garantia del libro
+    
+    PARAMETROS:
+    alumnos: Diccionario con la informacion de los alumnos
+    libros: Diccionario con la informacion de los libros
+    prestamos: Diccionario con la informacion de los prestamos
+    SALIDA:
+    Devuelve un registro nuevo en el diccionario de Prestamos, en caso de ingresar un ID erroneo o tipo de prestamo erroneo devuelve un mensaje informando el error
+    '''
     print("\n--- Registro de nuevo préstamo ---")
 
     idAlumno = input("ID del alumno (ej: 1001): ").strip()
@@ -486,6 +530,14 @@ def registrarPrestamo(alumnos, libros, prestamos):
 
 
 def devolverPrestamo(prestamos):
+    '''
+    Solicita el id del prestamo a devolver y cambia su status de Devuelto=False a Devuelto=True
+    
+    PARAMETROS:
+    prestamos: Diccionario de los prestamos
+    SALIDA:
+    Cambia el valor del atributo Devuelto a True, para identificar que un prestamo fue devuelto, en caso de no encontrar el prestamo informa que no fue encontrado ese ID
+    '''
     print("----- REGISTRAR DEVOLUCIÓN -----")
     idPrestamo = input("Ingrese el ID del préstamo (formato AAAA.MM.DD hh.mm.ss): ").strip()
 
@@ -507,7 +559,16 @@ def devolverPrestamo(prestamos):
 #-------------------------------
 
 
-def listarPrestamosMesActual(prestamos): #11 COMPLETADO
+def listarPrestamosMesActual(prestamos): #11 FUNCION PARA MOSTRAR LOS PRESTAMOS DEL MES ACTUAL
+    '''
+    Genera un resumen para mostrar la informacion de todos los prestamos del mes actual
+    
+    PARAMETROS:
+    prestamos: Diccionario de los prestamos del cual obtiene la informacion
+    SALIDA:
+    Imprime un listado con la informacion de todos los prestamos del mes actual
+    '''
+    
     tipoDict = {1: "Semanal", 2: "15 días", 3: "Mensual"}
     hoy = datetime.now()
 
@@ -524,10 +585,17 @@ def listarPrestamosMesActual(prestamos): #11 COMPLETADO
 
 
 
-def resumenAnualPrestamosCantidadTabla(libros, prestamos, año):  #12 COMPLETADO
-    """
-    Genera un resumen anual de cantidad de préstamos por libro, en formato de tabla mensual.
-    """
+def resumenAnualPrestamosCantidadTabla(libros, prestamos, año):  #FUNCION PARA IMPRIMIR UN RESUMEN ANUAL POR LIBROS SEGUN CANTIDAD EN FORMATO DE MATRIZ
+    '''
+    Genera un resumen anual de préstamos por libro en base a la cantidad de veces que fue prestado, en formato de matriz de tabla mensual, permitiendo elegir el año deseado 
+    
+    PARAMETROS:
+    libros:Diccionario de libros
+    prestamos: Diccionario de los prestamos, de aca obtiene la informacion del año al comparar el ID con el parametro año
+    año:Valor numerico para saber en que año realizar la busqueda, en un rango desde el 2000 hasta el 2026
+    SALIDA:
+    Imprime un resumen en base a la cantidad de veces que un libro fue prestado por libro de los prestamos del año seleccionado en un formato de matriz mes a mes
+    '''
     meses = [
         "ENE", "FEB", "MAR", "ABR", "MAY", "JUN",
         "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"
@@ -569,10 +637,17 @@ def resumenAnualPrestamosCantidadTabla(libros, prestamos, año):  #12 COMPLETADO
 
 
 
-def resumenAnualPrestamosPesosTabla(libros, prestamos, año):   #13 COMPLETADO
-    """
-    Genera un resumen anual de préstamos por libro en pesos, en formato de tabla mensual.
-    """
+def resumenAnualPrestamosPesosTabla(libros, prestamos, año):   #FUNCION PARA IMPRIMIR UN RESUMEN DE LOS PRESTAMOS DEL AÑO SELECCIONADO EN FORMATO MATRIZ
+    '''
+    Genera un resumen anual de préstamos por libro en pesos, en formato de matriz de tabla mensual, permitiendo elegir el año deseado 
+    
+    PARAMETROS:
+    libros:Diccionario de libros
+    prestamos: Diccionario de los prestamos, de aca obtiene la informacion del año al comparar el ID con el parametro año
+    año:Valor numerico para saber en que año realizar la busqueda, en un rango desde el 2000 hasta el 2026
+    SALIDA:
+    Imprime un resumen en pesos por libro de los prestamos del año seleccionado en un formato de matriz mes a mes
+    '''
     meses = [
         "ENE", "FEB", "MAR", "ABR", "MAY", "JUN",
         "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"
@@ -615,7 +690,16 @@ def resumenAnualPrestamosPesosTabla(libros, prestamos, año):   #13 COMPLETADO
     return
 
 
-def listarPrestamosAtrasados(prestamos, alumnos):  #14 COMPLETADO
+def listarPrestamosAtrasados(prestamos, alumnos): #Funcion para listar los prestamos atrasados
+    '''
+    Muestra un listado de los prestamos atrasados, es decir aquellos cuyo valor Devuelto=false y fechaDevolucion sea anterior a la fecha actual
+    
+    PARAMETROS:
+    prestamos:Diccionario de prestamos en el cual hace la busqueda
+    alumnos:Diccionario de alumnos en el cual obtiene el nombre y apellido del alumno
+    SALIDA:
+    Imprime un listado de todos los prestamos atrasados
+    '''
     fechaActual = datetime.now()
     print("Listado de préstamos atrasados al", fechaActual.strftime("%Y-%m-%d %H:%M:%S"))
     print("-" * 55)
@@ -884,6 +968,10 @@ def main():
                     
                 elif opcionSubmenu == "2":   # Opción 2 del submenú
                     año = input("Ingrese el año a realizar el resumen: ")
+                    while año <2000 or año>2026:
+                        print("Error, ingrese un año entre el 2000 y el 2026")
+                        año = input("Ingrese el año a realizar el resumen: ")
+                        
                     resumenAnualPrestamosCantidadTabla(Libros, Prestamos, año)
                 
                 elif opcionSubmenu == "3":   # Opción 3 del submenú
@@ -901,7 +989,3 @@ def main():
 
 # Punto de entrada al programa
 main()
-
-
-
-
