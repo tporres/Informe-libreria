@@ -211,8 +211,7 @@ def ingresoLibros(libros):  # libros es un diccionario
     editorial = input("Editorial: ").strip()
     categoria = input("Categoría: ").strip()
 
-    while True:
-        print("Por favor, ingrese un número entero.")        
+    while True:      
         stock = int(input("Cantidad en stock: "))
         while stock < 0:
             print("Error!!! Ingrese un número positivo")
@@ -220,7 +219,6 @@ def ingresoLibros(libros):  # libros es un diccionario
         break
         
     while True:
-        print("Ingrese un número válido (ej: 2500.0).")
         costo = float(input("Costo de garantía: "))
         while costo <= 0:
             print("Error,ingrese un número válido (ej: 2500.0).")
@@ -967,15 +965,19 @@ def main():
                     listarPrestamosMesActual(Prestamos)
                     
                 elif opcionSubmenu == "2":   # Opción 2 del submenú
-                    año = input("Ingrese el año a realizar el resumen: ")
+                    año = int(input("Ingrese el año a realizar el resumen: "))
                     while año <2000 or año>2026:
                         print("Error, ingrese un año entre el 2000 y el 2026")
-                        año = input("Ingrese el año a realizar el resumen: ")
-                        
+                        año = int(input("Ingrese el año a realizar el resumen: "))
+                    año=str(año)                       
                     resumenAnualPrestamosCantidadTabla(Libros, Prestamos, año)
                 
                 elif opcionSubmenu == "3":   # Opción 3 del submenú
-                    año = input("Ingrese el año a realizar el resumen: ")
+                    año = int(input("Ingrese el año a realizar el resumen: "))
+                    while año <2000 or año>2026:
+                        print("Error, ingrese un año entre el 2000 y el 2026")
+                        año = int(input("Ingrese el año a realizar el resumen: "))
+                    año=str(año) 
                     resumenAnualPrestamosPesosTabla(Libros, Prestamos, año)
                 
                 elif opcionSubmenu == "4":   # Opción 4 del submenú
