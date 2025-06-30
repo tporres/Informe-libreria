@@ -1,0 +1,132 @@
+{
+    "L001": {
+        "activo": true,
+        "stock": 7,
+        "nombre": "Cien Años de Soledad",
+        "editorial": "Sudamericana",
+        "categoria": "Novela",
+        "autores": {
+            "autor1": "Julio Cortázar",
+            "autor2": "",
+            "autor3": ""
+        },
+        "costo": 350.0
+    },
+    "L002": {
+        "activo": true,
+        "stock": 5,
+        "nombre": "1984",
+        "editorial": "Secker & Warburg",
+        "categoria": "Distopía",
+        "autores": {
+            "autor1": "George Orwell",
+            "autor2": "",
+            "autor3": ""
+        },
+        "costo": 280.0
+    },
+    "L003": {
+        "activo": true,
+        "stock": 3,
+        "nombre": "El Principito",
+        "editorial": "Reynal & Hitchcock",
+        "categoria": "Fantasía",
+        "autores": {
+            "autor1": "Antoine de Saint-Exupéry",
+            "autor2": "",
+            "autor3": ""
+        },
+        "costo": 150.0
+    },
+    "L004": {
+        "activo": true,
+        "stock": 4,
+        "nombre": "Don Quijote de la Mancha",
+        "editorial": "Francisco de Robles",
+        "categoria": "Clásico",
+        "autores": {
+            "autor1": "Miguel de Cervantes",
+            "autor2": "",
+            "autor3": ""
+        },
+        "costo": 400.0
+    },
+    "L005": {
+        "activo": true,
+        "stock": 2,
+        "nombre": "La Sombra del Viento",
+        "editorial": "Planeta",
+        "categoria": "Misterio",
+        "autores": {
+            "autor1": "Carlos Ruiz Zafón",
+            "autor2": "",
+            "autor3": ""
+        },
+        "costo": 320.0
+    },
+    "L006": {
+        "activo": true,
+        "stock": 8,
+        "nombre": "Rayuela",
+        "editorial": "Sudamericana",
+        "categoria": "Novela",
+        "autores": {
+            "autor1": "Julio Cortázar",
+            "autor2": "",
+            "autor3": ""
+        },
+        "costo": 270.0
+    },
+    "L007": {
+        "activo": true,
+        "stock": 6,
+        "nombre": "Ficciones",
+        "editorial": "Sur",
+        "categoria": "Cuentos",
+        "autores": {
+            "autor1": "Jorge Luis Borges",
+            "autor2": "",
+            "autor3": ""
+        },
+        "costo": 310.0
+    },
+    "L008": {
+        "activo": true,
+        "stock": 10,
+        "nombre": "Harry Potter y la piedra filosofal",
+        "editorial": "Salamandra",
+        "categoria": "Fantasía",
+        "autores": {
+            "autor1": "J.K. Rowling",
+            "autor2": "",
+            "autor3": ""
+        },
+        "costo": 380.0
+    },
+    "L009": {
+        "activo": true,
+        "stock": 1,
+        "nombre": "Los Juegos del Hambre",
+        "editorial": "Scholastic",
+        "categoria": "Ciencia Ficción",
+        "autores": {
+            "autor1": "Suzanne Collins",
+            "autor2": "",
+            "autor3": ""
+        },
+        "costo": 290.0
+    },
+    "L010": {
+        "activo": true,
+        "stock": 5,
+        "nombre": "Orgullo y Prejuicio",
+        "editorial": "T. Egerton",
+        "categoria": "Romance",
+        "autores": {
+            "autor1": "Jane Austen",
+            "autor2": "",
+            "autor3": ""
+        },
+        "costo": 260.0
+    }
+}

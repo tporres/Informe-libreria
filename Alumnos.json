@@ -1,0 +1,132 @@
+{
+    "1001": {
+        "activo": true,
+        "nombre": "Sofía",
+        "apellido": "Martínez",
+        "direccion": "Av. Corrientes 1234",
+        "email": "sofia.martinez@gmail.com",
+        "carrera": "Ingeniería en Sistemas",
+        "telefonos": {
+            "telefono1": "1134567890",
+            "telefono2": "1145678901",
+            "telefono3": "1156789012"
+        }
+    },
+    "1002": {
+        "activo": true,
+        "nombre": "Lucas",
+        "apellido": "Fernández",
+        "direccion": "Calle Falsa 123",
+        "email": "lucas.fernandez@gmail.com",
+        "carrera": "Licenciatura en Sistemas",
+        "telefonos": {
+            "telefono1": "1176543210",
+            "telefono2": "",
+            "telefono3": ""
+        }
+    },
+    "1003": {
+        "activo": true,
+        "nombre": "María",
+        "apellido": "Gómez",
+        "direccion": "Av. San Juan 456",
+        "email": "maria.gomez@gmail.com",
+        "carrera": "Ingeniería Industrial",
+        "telefonos": {
+            "telefono1": "1133344556",
+            "telefono2": "",
+            "telefono3": ""
+        }
+    },
+    "1004": {
+        "activo": true,
+        "nombre": "Tomás",
+        "apellido": "Pérez",
+        "direccion": "Av. Libertador 789",
+        "email": "tomas.perez@gmail.com",
+        "carrera": "Contador Público",
+        "telefonos": {
+            "telefono1": "1155556666",
+            "telefono2": "1177778888",
+            "telefono3": ""
+        }
+    },
+    "1005": {
+        "activo": true,
+        "nombre": "Camila",
+        "apellido": "López",
+        "direccion": "Calle Mendoza 234",
+        "email": "camila.lopez@gmail.com",
+        "carrera": "Derecho",
+        "telefonos": {
+            "telefono1": "1166667777",
+            "telefono2": "",
+            "telefono3": ""
+        }
+    },
+    "1006": {
+        "activo": true,
+        "nombre": "Mateo",
+        "apellido": "Rodríguez",
+        "direccion": "Calle Salta 100",
+        "email": "mateo.rodriguez@gmail.com",
+        "carrera": "Medicina",
+        "telefonos": {
+            "telefono1": "1188889999",
+            "telefono2": "1199990000",
+            "telefono3": ""
+        }
+    },
+    "1007": {
+        "activo": true,
+        "nombre": "Valentina",
+        "apellido": "Díaz",
+        "direccion": "Av. Córdoba 900",
+        "email": "valentina.diaz@gmail.com",
+        "carrera": "Arquitectura",
+        "telefonos": {
+            "telefono1": "1133214455",
+            "telefono2": "",
+            "telefono3": ""
+        }
+    },
+    "1008": {
+        "activo": true,
+        "nombre": "Julián",
+        "apellido": "Sánchez",
+        "direccion": "Calle Perú 678",
+        "email": "julian.sanchez@gmail.com",
+        "carrera": "Psicología",
+        "telefonos": {
+            "telefono1": "1122233344",
+            "telefono2": "",
+            "telefono3": ""
+        }
+    },
+    "1009": {
+        "activo": true,
+        "nombre": "Martina",
+        "apellido": "Romero",
+        "direccion": "Av. Rivadavia 200",
+        "email": "martina.romero@gmail.com",
+        "carrera": "Diseño Gráfico",
+        "telefonos": {
+            "telefono1": "1165432109",
+            "telefono2": "",
+            "telefono3": ""
+        }
+    },
+    "1010": {
+        "activo": true,
+        "nombre": "Benjamín",
+        "apellido": "Ruiz",
+        "direccion": "Calle Tucumán 300",
+        "email": "benjamin.ruiz@gmail.com",
+        "carrera": "Ingeniería Civil",
+        "telefonos": {
+            "telefono1": "1144433221",
+            "telefono2": "",
+            "telefono3": ""
+        }
+    }
+}

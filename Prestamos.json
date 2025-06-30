@@ -1,0 +1,82 @@
+{
+    "2025.06.01 09.15.00": {
+        "IdAlumno": "1001",
+        "IdLibro": "L001",
+        "tipoPrestamo": 1,
+        "costoPrestamo": 150,
+        "fechaDevolucion": "2025.06.08 09.15.00",
+        "Devuelto": true
+    },
+    "2025.06.02 14.30.00": {
+        "IdAlumno": "1002",
+        "IdLibro": "L002",
+        "tipoPrestamo": 2,
+        "costoPrestamo": 120,
+        "fechaDevolucion": "2025.06.17 14.30.00",
+        "Devuelto": false
+    },
+    "2024.06.02 14.30.00": {
+        "IdAlumno": "1002",
+        "IdLibro": "L002",
+        "tipoPrestamo": 2,
+        "costoPrestamo": 120,
+        "fechaDevolucion": "2025.06.17 14.30.00",
+        "Devuelto": true
+    },
+    "2025.06.03 10.00.00": {
+        "IdAlumno": "1003",
+        "IdLibro": "L003",
+        "tipoPrestamo": 3,
+        "costoPrestamo": 200,
+        "fechaDevolucion": "2025.07.03 10.00.00",
+        "Devuelto": false
+    },
+    "2025.06.04 11.45.00": {
+        "IdAlumno": "1004",
+        "IdLibro": "L004",
+        "tipoPrestamo": 1,
+        "costoPrestamo": 180,
+        "fechaDevolucion": "2025.06.11 11.45.00",
+        "Devuelto": true
+    },
+    "2024.06.05 13.20.00": {
+        "IdAlumno": "1005",
+        "IdLibro": "L005",
+        "tipoPrestamo": 2,
+        "costoPrestamo": 300,
+        "fechaDevolucion": "2024.06.20 13.20.00",
+        "Devuelto": false
+    },
+    "2024.06.06 08.10.00": {
+        "IdAlumno": "1006",
+        "IdLibro": "L006",
+        "tipoPrestamo": 3,
+        "costoPrestamo": 450,
+        "fechaDevolucion": "2024.07.06 08.10.00",
+        "Devuelto": false
+    },
+    "2025.06.07 15.30.00": {
+        "IdAlumno": "1007",
+        "IdLibro": "L007",
+        "tipoPrestamo": 1,
+        "costoPrestamo": 170,
+        "fechaDevolucion": "2025.06.14 15.30.00",
+        "Devuelto": true
+    },
+    "2025.06.08 12.25.00": {
+        "IdAlumno": "1008",
+        "IdLibro": "L008",
+        "tipoPrestamo": 2,
+        "costoPrestamo": 220,
+        "fechaDevolucion": "2025.06.23 12.25.00",
+        "Devuelto": false
+    },
+    "2022.06.09 09.00.00": {
+        "IdAlumno": "1009",
+        "IdLibro": "L009",
+        "tipoPrestamo": 3,
+        "costoPrestamo": 600,
+        "fechaDevolucion": "2022.07.09 09.00.00",
+        "Devuelto": false
+    }
+}
