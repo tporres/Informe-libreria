@@ -28,7 +28,6 @@ def ingresoAlumno():
     Funcion para ingresar alumnos al sistema.
     
     PARÁMETROS:
-            Alumnos = Diccionario
     SALIDA:
             Mensaje informativo que el Alumno fue ingresado correctamente. Ademas se carga el Alumno ingresado en el diccionario "Alumnos".
     """
@@ -447,6 +446,8 @@ def librosActivos():
                 print(f"Categoría: {datos['categoria']}")
                 print(f"Stock: {datos['stock']}")
                 print(f"Autor 1: {datos['autores']['autor1']}")
+                print(f"Autor 2: {datos['autores']['autor2']}")
+                print(f"Autor 3: {datos['autores']['autor3']}")
                 print(f"Costo de garantia por dia: {datos['costo']}")
                 print("-" * 30)
 
@@ -487,6 +488,8 @@ def buscarLibrosPorAutor(): #Funcion para buscar libros en base a su autor
                     print(f"Categoría: {datos['categoria']}")
                     print(f"Stock: {datos['stock']}")
                     print(f"Autor 1: {datos['autores']['autor1']}")
+                    print(f"Autor 2: {datos['autores']['autor2']}")
+                    print(f"Autor 3: {datos['autores']['autor3']}")
                     print("-" * 30)
                     break  # Evita duplicar si el autor aparece más de una vez en el mismo libro
 
@@ -526,6 +529,8 @@ def buscarLibrosPorCategoria():      #Funcion para buscar libros en base a su ca
                 print(f"Categoría: {datos['categoria']}")
                 print(f"Stock: {datos['stock']}")
                 print(f"Autor 1: {datos['autores']['autor1']}")
+                print(f"Autor 2: {datos['autores']['autor2']}")
+                print(f"Autor 3: {datos['autores']['autor3']}")
                 print("-" * 30)
 
         if not encontrados:
@@ -969,7 +974,7 @@ def main():
                     opciones = 4
                     print()
                     print("---------------------------")
-                    print("MENÚ PRINCIPAL > MENÚ DE CLIENTES")
+                    print("MENÚ PRINCIPAL > MENÚ DE ALUMNOS")
                     print("---------------------------")
                     print("[1] Ingresar Alumno")
                     print("[2] Modificar Alumno")
