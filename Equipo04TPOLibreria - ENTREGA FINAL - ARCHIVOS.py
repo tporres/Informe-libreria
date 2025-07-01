@@ -303,8 +303,8 @@ def ingresoLibros():
         libros[nuevoId] = libro  # Se agrega al diccionario original
         
          #Escribo el archivo json de Libros con el diccionario de libros
-        Libros=open("Alumnos.json",mode="w",encoding="utf-8")
-        libros=json.dump(alumnos,Alumnos,ensure_ascii=False,indent=4)
+        Libros=open("Libros.json",mode="w",encoding="utf-8")
+        libros=json.dump(libros,Libros,ensure_ascii=False,indent=4)
         Libros.close()
 
         print(f"\n El libro '{nombre}' (ID: {nuevoId}) fue agregado con éxito.\n")
