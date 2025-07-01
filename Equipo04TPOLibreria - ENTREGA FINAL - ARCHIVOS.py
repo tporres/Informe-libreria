@@ -20,6 +20,17 @@ import json
 # FUNCIONES
 #----------------------------------------------------------------------------------------------
 
+#FUNCIONES DE VALIDACION
+def enteroPositivo(mensaje):
+    while True:
+        try:
+            valor = int(input(mensaje))
+            if valor >= 0:
+                return valor
+            print("Debe ser un número igual o mayor a 0.")
+        except ValueError:
+            print("Entrada inválida. Ingrese un número igual o mayor a 0.")
+
 # FUNCIONES PARA GESTIONAR ALUMNOS
 
 def ingresoAlumno():
@@ -253,13 +264,7 @@ def ingresoLibros():
         nombre = input("Nombre del libro: ").strip()
         editorial = input("Editorial: ").strip()
         categoria = input("Categoría: ").strip()
-
-        while True:      
-            stock = int(input("Cantidad en stock: "))
-            while stock < 0:
-                print("Error!!! Ingrese un número positivo")
-                stock = int(input("Cantidad en stock: "))
-            break
+        stock = enteroPositivo("Ingrese stock") #Llamo a una funcion que valide que se ingrese un entero >=0
             
         while True:
             costo = float(input("Costo de garantía: "))
@@ -340,7 +345,7 @@ def modificarLibro():
         nombre = input(f"Nombre actual ({libro['nombre']}): ").strip()
         editorial = input(f"Editorial actual ({libro['editorial']}): ").strip()
         categoria = input(f"Categoría actual ({libro['categoria']}): ").strip()
-        stock = input(f"Stock actual ({libro['stock']}): ").strip()
+        stock = enteroPositivo((f"Stock actual ({libro['stock']}): ").strip())
         costo = input(f"Costo actual ({libro['costo']}): ").strip()
         activo = input(f"¿Activo? (actual: {libro['activo']}, s/n): ").strip().lower()
 
@@ -355,7 +360,7 @@ def modificarLibro():
             libro['editorial'] = editorial
         if categoria:
             libro['categoria'] = categoria
-        if stock and stock.isdigit():
+        if stock:
             libro['stock'] = int(stock)
         if costo:
             libro['costo'] = float(costo)
@@ -888,56 +893,7 @@ def listarPrestamosAtrasados(): #Funcion para listar los prestamos atrasados
 # CUERPO PRINCIPAL
 #----------------------------------------------------------------------------------------------
 def main():
-    #-------------------------------------------------
-    # Inicialización de variables
-    #----------------------------------------------------------------------------------------------
     
-    """
-    Alumnos = {
-    "1001": {"activo": True, "nombre": "Sofía", "apellido": "Martínez", "direccion": "Av. Corrientes 1234", "email": "sofia.martinez@gmail.com", "carrera": "Ingeniería en Sistemas", "telefonos": {"telefono1": "1134567890", "telefono2": "1145678901", "telefono3": "1156789012"}},
-    "1002": {"activo": True, "nombre": "Lucas", "apellido": "Fernández", "direccion": "Calle Falsa 123", "email": "lucas.fernandez@gmail.com", "carrera": "Licenciatura en Sistemas", "telefonos": {"telefono1": "1176543210", "telefono2": "", "telefono3": ""}},
-    "1003": {"activo": True, "nombre": "María", "apellido": "Gómez", "direccion": "Av. San Juan 456", "email": "maria.gomez@gmail.com", "carrera": "Ingeniería Industrial", "telefonos": {"telefono1": "1133344556", "telefono2": "", "telefono3": ""}},
-    "1004": {"activo": True, "nombre": "Tomás", "apellido": "Pérez", "direccion": "Av. Libertador 789", "email": "tomas.perez@gmail.com", "carrera": "Contador Público", "telefonos": {"telefono1": "1155556666", "telefono2": "1177778888", "telefono3": ""}},
-    "1005": {"activo": True, "nombre": "Camila", "apellido": "López", "direccion": "Calle Mendoza 234", "email": "camila.lopez@gmail.com", "carrera": "Derecho", "telefonos": {"telefono1": "1166667777", "telefono2": "", "telefono3": ""}},
-    "1006": {"activo": True, "nombre": "Mateo", "apellido": "Rodríguez", "direccion": "Calle Salta 100", "email": "mateo.rodriguez@gmail.com", "carrera": "Medicina", "telefonos": {"telefono1": "1188889999", "telefono2": "1199990000", "telefono3": ""}},
-    "1007": {"activo": True, "nombre": "Valentina", "apellido": "Díaz", "direccion": "Av. Córdoba 900", "email": "valentina.diaz@gmail.com", "carrera": "Arquitectura", "telefonos": {"telefono1": "1133214455", "telefono2": "", "telefono3": ""}},
-    "1008": {"activo": True, "nombre": "Julián", "apellido": "Sánchez", "direccion": "Calle Perú 678", "email": "julian.sanchez@gmail.com", "carrera": "Psicología", "telefonos": {"telefono1": "1122233344", "telefono2": "", "telefono3": ""}},
-    "1009": {"activo": True, "nombre": "Martina", "apellido": "Romero", "direccion": "Av. Rivadavia 200", "email": "martina.romero@gmail.com", "carrera": "Diseño Gráfico", "telefonos": {"telefono1": "1165432109", "telefono2": "", "telefono3": ""}},
-    "1010": {"activo": True, "nombre": "Benjamín", "apellido": "Ruiz", "direccion": "Calle Tucumán 300", "email": "benjamin.ruiz@gmail.com", "carrera": "Ingeniería Civil", "telefonos": {"telefono1": "1144433221", "telefono2": "", "telefono3": ""}}
-}
-    
-    Prestamos = {
-    "2025.06.01 09.15.00": {"IdAlumno": "1001", "IdLibro": "L001", "tipoPrestamo": 1,"costoPrestamo": 150, "fechaDevolucion": "2025.06.08 09.15.00", "Devuelto": True},
-    "2025.06.02 14.30.00": {"IdAlumno": "1002", "IdLibro": "L002", "tipoPrestamo": 2,"costoPrestamo": 120, "fechaDevolucion": "2025.06.17 14.30.00", "Devuelto": False},
-    "2024.06.02 14.30.00": {"IdAlumno": "1002", "IdLibro": "L002", "tipoPrestamo": 2,"costoPrestamo": 120, "fechaDevolucion": "2025.06.17 14.30.00", "Devuelto": True},
-    "2025.06.03 10.00.00": {"IdAlumno": "1003", "IdLibro": "L003", "tipoPrestamo": 3,"costoPrestamo": 200, "fechaDevolucion": "2025.07.03 10.00.00", "Devuelto": False},
-    "2025.06.04 11.45.00": {"IdAlumno": "1004", "IdLibro": "L004", "tipoPrestamo": 1,"costoPrestamo": 180, "fechaDevolucion": "2025.06.11 11.45.00", "Devuelto": True},
-    "2024.06.05 13.20.00": {"IdAlumno": "1005", "IdLibro": "L005", "tipoPrestamo": 2,"costoPrestamo": 300, "fechaDevolucion": "2024.06.20 13.20.00", "Devuelto": False},
-    "2024.06.06 08.10.00": {"IdAlumno": "1006", "IdLibro": "L006", "tipoPrestamo": 3,"costoPrestamo": 450, "fechaDevolucion": "2024.07.06 08.10.00", "Devuelto": False},
-    "2025.06.07 15.30.00": {"IdAlumno": "1007", "IdLibro": "L007", "tipoPrestamo": 1,"costoPrestamo": 170, "fechaDevolucion": "2025.06.14 15.30.00", "Devuelto": True},
-    "2025.06.08 12.25.00": {"IdAlumno": "1008", "IdLibro": "L008", "tipoPrestamo": 2,"costoPrestamo": 220, "fechaDevolucion": "2025.06.23 12.25.00", "Devuelto": False},
-    "2022.06.09 09.00.00": {"IdAlumno": "1009", "IdLibro": "L009", "tipoPrestamo": 3,"costoPrestamo": 600, "fechaDevolucion": "2022.07.09 09.00.00", "Devuelto": False}
-}
-    Libros = {
-    "L001": {"activo": True, "stock": 7, "nombre": "Cien Años de Soledad", "editorial": "Sudamericana", "categoria": "Novela", "autores": {"autor1": "Julio Cortázar", "autor2": "", "autor3": ""}, "costo": 350.0},
-    "L002": {"activo": True, "stock": 5, "nombre": "1984", "editorial": "Secker & Warburg", "categoria": "Distopía", "autores": {"autor1": "George Orwell", "autor2": "", "autor3": ""}, "costo": 280.0},
-    "L003": {"activo": True, "stock": 3, "nombre": "El Principito", "editorial": "Reynal & Hitchcock", "categoria": "Fantasía", "autores": {"autor1": "Antoine de Saint-Exupéry", "autor2": "", "autor3": ""}, "costo": 150.0},
-    "L004": {"activo": True, "stock": 4, "nombre": "Don Quijote de la Mancha", "editorial": "Francisco de Robles", "categoria": "Clásico", "autores": {"autor1": "Miguel de Cervantes", "autor2": "", "autor3": ""}, "costo": 400.0},
-    "L005": {"activo": True, "stock": 2, "nombre": "La Sombra del Viento", "editorial": "Planeta", "categoria": "Misterio", "autores": {"autor1": "Carlos Ruiz Zafón", "autor2": "", "autor3": ""}, "costo": 320.0},
-    "L006": {"activo": True, "stock": 8, "nombre": "Rayuela", "editorial": "Sudamericana", "categoria": "Novela", "autores": {"autor1": "Julio Cortázar", "autor2": "", "autor3": ""}, "costo": 270.0},
-    "L007": {"activo": True, "stock": 6, "nombre": "Ficciones", "editorial": "Sur", "categoria": "Cuentos", "autores": {"autor1": "Jorge Luis Borges", "autor2": "", "autor3": ""}, "costo": 310.0},
-    "L008": {"activo": True, "stock": 10, "nombre": "Harry Potter y la piedra filosofal", "editorial": "Salamandra", "categoria": "Fantasía", "autores": {"autor1": "J.K. Rowling", "autor2": "", "autor3": ""}, "costo": 380.0},
-    "L009": {"activo": True, "stock": 1, "nombre": "Los Juegos del Hambre", "editorial": "Scholastic", "categoria": "Ciencia Ficción", "autores": {"autor1": "Suzanne Collins", "autor2": "", "autor3": ""}, "costo": 290.0},
-    "L010": {"activo": True, "stock": 5, "nombre": "Orgullo y Prejuicio", "editorial": "T. Egerton", "categoria": "Romance", "autores": {"autor1": "Jane Austen", "autor2": "", "autor3": ""}, "costo": 260.0}
-}
-    """
-
-    
-
-
-
-
-
     #-------------------------------------------------
     # Bloque de menú
     #----------------------------------------------------------------------------------------------
