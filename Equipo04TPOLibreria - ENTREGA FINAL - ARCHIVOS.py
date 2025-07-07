@@ -28,11 +28,55 @@ def validarEmail(_email):
     return bool(re.match(pat, _email))
 
 def pedirMail():
-    email = input("Ingrese un email: ").strip()
+    email = input("Ingrese un email:").strip()
     while not validarEmail(email):
         print("Email inválido. Intente nuevamente.")
         email = input("Ingrese un email válido: ").strip()
     return email
+
+def pedirTelefono(nro="Telefono"):
+    while True:
+        telefono = input(f"Ingrese {nro} (Enter para dejar vacío): ").strip()
+        
+        if telefono == "":
+            return ""  # Permite dejar vacío
+        
+        if validarTelefono(telefono):
+            return telefono
+        else:
+            print("Número inválido. Debe contener solo dígitos y tener entre 10 y 12 caracteres.")
+        
+
+def validarTelefono(_telefono):
+    _telefono = _telefono.strip()
+    if _telefono.isdigit() and 10 <= len(_telefono) <= 12:
+        return int(_telefono) > 0
+    else:
+        return False
+    
+def validarNombre(_nombre):
+    nombreSinEspacios= _nombre.replace(" ", "")
+    return nombreSinEspacios.isalpha()
+
+def pedirNombre():
+    while True:
+        try:
+            nombre = input("Nombre: ").strip()
+            if not validarNombre(nombre):
+                raise ValueError
+            return nombre
+        except ValueError:
+            print("Error: El nombre solo debe contener letras y espacios")
+
+def pedirApellido():
+    while True:
+        try:
+            apellido = input("Apellido: ").strip()
+            if not validarNombre(apellido):
+                raise ValueError
+            return apellido
+        except ValueError:
+            print("Error: El apellido solo debe contener letras y espacios")
 
 def enteroPositivo(mensaje):
     while True:
@@ -65,14 +109,14 @@ def ingresoAlumno():
         print("Ingreso de nuevo Alumno")
         print("---------------------------")
 
-        nombre = input("Nombre: ").strip()
-        apellido = input("Apellido: ").strip()
+        nombre = pedirNombre()
+        apellido = pedirApellido()
         direccion = input("Dirección: ").strip()
         email = pedirMail()
         carrera = input("Carrera de estudio: ").strip()
-        telefono1 = input("Telefono 1: ").strip()
-        telefono2 = input("Telefono 2: ").strip()
-        telefono3 = input("Telefono 3: ").strip()
+        telefono1 = pedirTelefono("Telefono 1:")
+        telefono2 = pedirTelefono("Telefono 2:")
+        telefono3 = pedirTelefono("Telefono 3:")
 
         if not alumnos:
             nuevoId = "1001"
@@ -141,16 +185,21 @@ def modificarAlumno():
         alumno = alumnos[idAlumno]
         print("\nDeje en blanco para no modificar ese campo.")
 
-        nombre = input(f"Nombre actual ({alumno['nombre']}): ").strip()
-        apellido = input(f"Apellido actual ({alumno['apellido']}): ").strip()
+        print(f"Nombre actual ({alumno['nombre']}): ").strip()
+        nombre=pedirNombre()
+        print(f"Apellido actual ({alumno['apellido']}): ").strip()
+        apellido = pedirApellido()
         direccion = input(f"Dirección actual ({alumno['direccion']}): ").strip()
-        print((f"Email actual ({alumno['email']}): ").strip())
+        print((f"Email actual ({alumno['email']}): "))
         email = pedirMail()
         carrera = input(f"Carrera actual ({alumno['carrera']}): ").strip()
 
-        telefono1 = input(f"Teléfono 1 actual ({alumno['telefonos']['telefono1']}): ").strip()
-        telefono2 = input(f"Teléfono 2 actual ({alumno['telefonos']['telefono2']}): ").strip()
-        telefono3 = input(f"Teléfono 3 actual ({alumno['telefonos']['telefono3']}): ").strip()
+        print(f"Teléfono 1 actual ({alumno['telefonos']['telefono1']}): ")
+        telefono1 = pedirTelefono("Telefono 1:")        
+        print(f"Teléfono 2 actual ({alumno['telefonos']['telefono2']}): ")
+        telefono2 = pedirTelefono("Telefono 2:")
+        print(f"Teléfono 3 actual ({alumno['telefonos']['telefono3']}): ")
+        telefono3 = pedirTelefono("Telefono 3:")
 
         # Solo actualiza si el campo no está vacío
         if nombre:
@@ -280,14 +329,8 @@ def ingresoLibros():
         nombre = input("Nombre del libro: ").strip()
         editorial = input("Editorial: ").strip()
         categoria = input("Categoría: ").strip()
-        stock = enteroPositivo("Ingrese stock") #Llamo a una funcion que valide que se ingrese un entero >=0
-            
-        while True:
-            costo = float(input("Costo de garantía: "))
-            while costo <= 0:
-                print("Error,ingrese un número válido (ej: 2500.0).")
-                costo = float(input("Costo de garantía: "))
-            break
+        stock = enteroPositivo("Ingrese stock:") #Llamo a una funcion que valide que se ingrese un entero >=0
+        costo=enteroPositivo("Ingrese costo:")
             
 
         autor1 = input("Autor principal: ").strip()
@@ -361,8 +404,8 @@ def modificarLibro():
         nombre = input(f"Nombre actual ({libro['nombre']}): ").strip()
         editorial = input(f"Editorial actual ({libro['editorial']}): ").strip()
         categoria = input(f"Categoría actual ({libro['categoria']}): ").strip()
-        stock = enteroPositivo((f"Stock actual ({libro['stock']}): ").strip())
-        costo = input(f"Costo actual ({libro['costo']}): ").strip()
+        stock = enteroPositivo((f"Stock actual ({libro['stock']}): "))
+        costo=enteroPositivo(f"Costo actual ({libro['costo']}): ")
         activo = input(f"¿Activo? (actual: {libro['activo']}, s/n): ").strip().lower()
 
         autor1 = input(f"Autor 1 actual ({libro['autores']['autor1']}): ").strip()
@@ -379,7 +422,7 @@ def modificarLibro():
         if stock:
             libro['stock'] = int(stock)
         if costo:
-            libro['costo'] = float(costo)
+            libro['costo'] = int(costo)
         if activo:
             libro['activo'] = (activo == "s")
 
