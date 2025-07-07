@@ -15,12 +15,25 @@ Pendientes:
 #----------------------------------------------------------------------------------------------
 from datetime import datetime, timedelta
 import json
+import re
 
 #----------------------------------------------------------------------------------------------
 # FUNCIONES
 #----------------------------------------------------------------------------------------------
 
 #FUNCIONES DE VALIDACION
+
+def validarEmail(_email):
+    pat = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
+    return bool(re.match(pat, _email))
+
+def pedirMail():
+    email = input("Ingrese un email: ").strip()
+    while not validarEmail(email):
+        print("Email inválido. Intente nuevamente.")
+        email = input("Ingrese un email válido: ").strip()
+    return email
+
 def enteroPositivo(mensaje):
     while True:
         try:
@@ -55,7 +68,7 @@ def ingresoAlumno():
         nombre = input("Nombre: ").strip()
         apellido = input("Apellido: ").strip()
         direccion = input("Dirección: ").strip()
-        email = input("Email: ").strip()
+        email = pedirMail()
         carrera = input("Carrera de estudio: ").strip()
         telefono1 = input("Telefono 1: ").strip()
         telefono2 = input("Telefono 2: ").strip()
@@ -131,7 +144,8 @@ def modificarAlumno():
         nombre = input(f"Nombre actual ({alumno['nombre']}): ").strip()
         apellido = input(f"Apellido actual ({alumno['apellido']}): ").strip()
         direccion = input(f"Dirección actual ({alumno['direccion']}): ").strip()
-        email = input(f"Email actual ({alumno['email']}): ").strip()
+        print((f"Email actual ({alumno['email']}): ").strip())
+        email = pedirMail()
         carrera = input(f"Carrera actual ({alumno['carrera']}): ").strip()
 
         telefono1 = input(f"Teléfono 1 actual ({alumno['telefonos']['telefono1']}): ").strip()
@@ -231,10 +245,12 @@ def listarAlumnos():
                 encontrados = True
                 print("-" * 30)
                 print(f"Legajo: {legajo}")
-                print(f"Nombre: {datos['nombre']} {datos['apellido']}")
+                print(f"Nombre completo: {datos['nombre']} {datos['apellido']}")
                 print(f"Email: {datos['email']}")
                 print(f"Carrera: {datos['carrera']}")
                 print(f"Teléfono 1: {datos['telefonos']['telefono1']}")
+                print(f"Teléfono 2: {datos['telefonos']['telefono2']}")
+                print(f"Teléfono 3: {datos['telefonos']['telefono3']}")
                 print("-" * 30)
         if not encontrados:
             print("No hay alumnos activos para listar.")
