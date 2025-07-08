@@ -1,7 +1,7 @@
 """
 -----------------------------------------------------------------------------------------------
-Título: TPO Entrega 1
-Fecha:  03/06/2025
+Título: TPO Entrega final
+Fecha:  07/07/2025
 Autor:  Grupo 04
 
 Descripción: Se trata de un sistema informático para una biblioteca de organización educativa que da préstamos de libros a alumnos.
@@ -36,6 +36,9 @@ def validarEmail(_email):
     pat = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
     return bool(re.match(pat, _email))
 
+
+
+
 def pedirMail():
     '''
     Solicita al usuario que ingrese un email y valida su formato.
@@ -49,6 +52,29 @@ def pedirMail():
         print("Email inválido. Intente nuevamente.")
         email = input("Ingrese un email válido: ").strip()
     return email
+
+def pedirMailOpcional(email_actual):
+    """
+    Pide un nuevo email. Si se deja vacío, conserva el actual.
+    
+    PARAMETROS:
+    email_actual: string con el email que ya tiene el alumno
+    
+    SALIDA:
+    - Nuevo email validado si se ingresa uno.
+    - El mismo email si se deja vacío.
+    """
+    entrada = input(f"Ingrese nuevo email (actual: {email_actual}, Enter para mantenerlo): ").strip()
+    if entrada == "":
+        return email_actual
+
+    while not validarEmail(entrada):
+        print("Email inválido. Intente nuevamente o presione Enter para dejar el actual.")
+        entrada = input("Ingrese un email válido: ").strip()
+        if entrada == "":
+            return email_actual
+
+    return entrada
 
 def pedirTelefono(nro="Telefono"):
     '''
@@ -117,6 +143,28 @@ def pedirNombre():
             return nombre
         except ValueError:
             print("Error: El nombre solo debe contener letras y espacios")
+            
+def pedirNombreOpcional(nombreActual):
+    '''
+    Solicita un nuevo nombre o permite mantener el actual si se deja vacío.
+    
+    PARÁMETROS:
+    nombreActual: El nombre que ya tiene el alumno.
+
+    SALIDA:
+    Devuelve el nuevo nombre si es válido o el actual si se deja vacío.
+    '''
+    while True:
+        try:
+            nombre = input(f"Ingrese nuevo nombre (actual: {nombreActual}, Enter para mantenerlo): ").strip()
+            if nombre == "":
+                return nombreActual
+            if not validarNombre(nombre):
+                raise ValueError
+            return nombre
+        except ValueError:
+            print("Error: El nombre solo debe contener letras y espacios.")
+            
 
 def pedirApellido():
     '''
@@ -134,6 +182,27 @@ def pedirApellido():
             return apellido
         except ValueError:
             print("Error: El apellido solo debe contener letras y espacios")
+            
+def pedirApellidoOpcional(apellidoActual):
+    '''
+    Solicita un nuevo apellido o permite mantener el actual si se deja vacío.
+    
+    PARÁMETROS:
+    apellidoActual: El apellido que ya tiene el alumno.
+
+    SALIDA:
+    Devuelve el nuevo apellido si es válido o el actual si se deja vacío.
+    '''
+    while True:
+        try:
+            apellido = input(f"Ingrese nuevo apellido (actual: {apellidoActual}, Enter para mantenerlo): ").strip()
+            if apellido == "":
+                return apellidoActual
+            if not validarNombre(apellido):
+                raise ValueError
+            return apellido
+        except ValueError:
+            print("Error: El apellido solo debe contener letras y espacios.")
 
 def enteroPositivo(mensaje):
     '''
@@ -289,13 +358,11 @@ def modificarAlumno():
         alumno = alumnos[idAlumno]
         print("\nDeje en blanco para no modificar ese campo.")
 
-        print(f"Nombre actual ({alumno['nombre']}): ").strip()
-        nombre=pedirNombre()
-        print(f"Apellido actual ({alumno['apellido']}): ").strip()
-        apellido = pedirApellido()
+        nombre=pedirNombreOpcional(alumno['nombre'])
+        apellido = pedirApellidoOpcional(alumno['apellido'])
         direccion = input(f"Dirección actual ({alumno['direccion']}): ").strip()
         print((f"Email actual ({alumno['email']}): "))
-        email = pedirMail()
+        email = pedirMailOpcional(alumno['email'])
         carrera = input(f"Carrera actual ({alumno['carrera']}): ").strip()
 
         print(f"Teléfono 1 actual ({alumno['telefonos']['telefono1']}): ")
@@ -1270,6 +1337,49 @@ def main():
             print("\n\n")
 
 
+#---------------------------------------------------------------------------------------------
+# Inicialización de variables
+#----------------------------------------------------------------------------------------------
+ #Estos eran los diccionarios que utilizamos en la version previa, actualmente se utilizan archivos JSON que fueron generados en base a estos diccionarios   
+    """
+    Alumnos = {
+    "1001": {"activo": True, "nombre": "Sofía", "apellido": "Martínez", "direccion": "Av. Corrientes 1234", "email": "sofia.martinez@gmail.com", "carrera": "Ingeniería en Sistemas", "telefonos": {"telefono1": "1134567890", "telefono2": "1145678901", "telefono3": "1156789012"}},
+    "1002": {"activo": True, "nombre": "Lucas", "apellido": "Fernández", "direccion": "Calle Falsa 123", "email": "lucas.fernandez@gmail.com", "carrera": "Licenciatura en Sistemas", "telefonos": {"telefono1": "1176543210", "telefono2": "", "telefono3": ""}},
+    "1003": {"activo": True, "nombre": "María", "apellido": "Gómez", "direccion": "Av. San Juan 456", "email": "maria.gomez@gmail.com", "carrera": "Ingeniería Industrial", "telefonos": {"telefono1": "1133344556", "telefono2": "", "telefono3": ""}},
+    "1004": {"activo": True, "nombre": "Tomás", "apellido": "Pérez", "direccion": "Av. Libertador 789", "email": "tomas.perez@gmail.com", "carrera": "Contador Público", "telefonos": {"telefono1": "1155556666", "telefono2": "1177778888", "telefono3": ""}},
+    "1005": {"activo": True, "nombre": "Camila", "apellido": "López", "direccion": "Calle Mendoza 234", "email": "camila.lopez@gmail.com", "carrera": "Derecho", "telefonos": {"telefono1": "1166667777", "telefono2": "", "telefono3": ""}},
+    "1006": {"activo": True, "nombre": "Mateo", "apellido": "Rodríguez", "direccion": "Calle Salta 100", "email": "mateo.rodriguez@gmail.com", "carrera": "Medicina", "telefonos": {"telefono1": "1188889999", "telefono2": "1199990000", "telefono3": ""}},
+    "1007": {"activo": True, "nombre": "Valentina", "apellido": "Díaz", "direccion": "Av. Córdoba 900", "email": "valentina.diaz@gmail.com", "carrera": "Arquitectura", "telefonos": {"telefono1": "1133214455", "telefono2": "", "telefono3": ""}},
+    "1008": {"activo": True, "nombre": "Julián", "apellido": "Sánchez", "direccion": "Calle Perú 678", "email": "julian.sanchez@gmail.com", "carrera": "Psicología", "telefonos": {"telefono1": "1122233344", "telefono2": "", "telefono3": ""}},
+    "1009": {"activo": True, "nombre": "Martina", "apellido": "Romero", "direccion": "Av. Rivadavia 200", "email": "martina.romero@gmail.com", "carrera": "Diseño Gráfico", "telefonos": {"telefono1": "1165432109", "telefono2": "", "telefono3": ""}},
+    "1010": {"activo": True, "nombre": "Benjamín", "apellido": "Ruiz", "direccion": "Calle Tucumán 300", "email": "benjamin.ruiz@gmail.com", "carrera": "Ingeniería Civil", "telefonos": {"telefono1": "1144433221", "telefono2": "", "telefono3": ""}}
+}
+    
+    Prestamos = {
+    "2025.06.01 09.15.00": {"IdAlumno": "1001", "IdLibro": "L001", "tipoPrestamo": 1,"costoPrestamo": 150, "fechaDevolucion": "2025.06.08 09.15.00", "Devuelto": True},
+    "2025.06.02 14.30.00": {"IdAlumno": "1002", "IdLibro": "L002", "tipoPrestamo": 2,"costoPrestamo": 120, "fechaDevolucion": "2025.06.17 14.30.00", "Devuelto": False},
+    "2024.06.02 14.30.00": {"IdAlumno": "1002", "IdLibro": "L002", "tipoPrestamo": 2,"costoPrestamo": 120, "fechaDevolucion": "2025.06.17 14.30.00", "Devuelto": True},
+    "2025.06.03 10.00.00": {"IdAlumno": "1003", "IdLibro": "L003", "tipoPrestamo": 3,"costoPrestamo": 200, "fechaDevolucion": "2025.07.03 10.00.00", "Devuelto": False},
+    "2025.06.04 11.45.00": {"IdAlumno": "1004", "IdLibro": "L004", "tipoPrestamo": 1,"costoPrestamo": 180, "fechaDevolucion": "2025.06.11 11.45.00", "Devuelto": True},
+    "2024.06.05 13.20.00": {"IdAlumno": "1005", "IdLibro": "L005", "tipoPrestamo": 2,"costoPrestamo": 300, "fechaDevolucion": "2024.06.20 13.20.00", "Devuelto": False},
+    "2024.06.06 08.10.00": {"IdAlumno": "1006", "IdLibro": "L006", "tipoPrestamo": 3,"costoPrestamo": 450, "fechaDevolucion": "2024.07.06 08.10.00", "Devuelto": False},
+    "2025.06.07 15.30.00": {"IdAlumno": "1007", "IdLibro": "L007", "tipoPrestamo": 1,"costoPrestamo": 170, "fechaDevolucion": "2025.06.14 15.30.00", "Devuelto": True},
+    "2025.06.08 12.25.00": {"IdAlumno": "1008", "IdLibro": "L008", "tipoPrestamo": 2,"costoPrestamo": 220, "fechaDevolucion": "2025.06.23 12.25.00", "Devuelto": False},
+    "2022.06.09 09.00.00": {"IdAlumno": "1009", "IdLibro": "L009", "tipoPrestamo": 3,"costoPrestamo": 600, "fechaDevolucion": "2022.07.09 09.00.00", "Devuelto": False}
+}
+    Libros = {
+    "L001": {"activo": True, "stock": 7, "nombre": "Cien Años de Soledad", "editorial": "Sudamericana", "categoria": "Novela", "autores": {"autor1": "Julio Cortázar", "autor2": "", "autor3": ""}, "costo": 350.0},
+    "L002": {"activo": True, "stock": 5, "nombre": "1984", "editorial": "Secker & Warburg", "categoria": "Distopía", "autores": {"autor1": "George Orwell", "autor2": "", "autor3": ""}, "costo": 280.0},
+    "L003": {"activo": True, "stock": 3, "nombre": "El Principito", "editorial": "Reynal & Hitchcock", "categoria": "Fantasía", "autores": {"autor1": "Antoine de Saint-Exupéry", "autor2": "", "autor3": ""}, "costo": 150.0},
+    "L004": {"activo": True, "stock": 4, "nombre": "Don Quijote de la Mancha", "editorial": "Francisco de Robles", "categoria": "Clásico", "autores": {"autor1": "Miguel de Cervantes", "autor2": "", "autor3": ""}, "costo": 400.0},
+    "L005": {"activo": True, "stock": 2, "nombre": "La Sombra del Viento", "editorial": "Planeta", "categoria": "Misterio", "autores": {"autor1": "Carlos Ruiz Zafón", "autor2": "", "autor3": ""}, "costo": 320.0},
+    "L006": {"activo": True, "stock": 8, "nombre": "Rayuela", "editorial": "Sudamericana", "categoria": "Novela", "autores": {"autor1": "Julio Cortázar", "autor2": "", "autor3": ""}, "costo": 270.0},
+    "L007": {"activo": True, "stock": 6, "nombre": "Ficciones", "editorial": "Sur", "categoria": "Cuentos", "autores": {"autor1": "Jorge Luis Borges", "autor2": "", "autor3": ""}, "costo": 310.0},
+    "L008": {"activo": True, "stock": 10, "nombre": "Harry Potter y la piedra filosofal", "editorial": "Salamandra", "categoria": "Fantasía", "autores": {"autor1": "J.K. Rowling", "autor2": "", "autor3": ""}, "costo": 380.0},
+    "L009": {"activo": True, "stock": 1, "nombre": "Los Juegos del Hambre", "editorial": "Scholastic", "categoria": "Ciencia Ficción", "autores": {"autor1": "Suzanne Collins", "autor2": "", "autor3": ""}, "costo": 290.0},
+    "L010": {"activo": True, "stock": 5, "nombre": "Orgullo y Prejuicio", "editorial": "T. Egerton", "categoria": "Romance", "autores": {"autor1": "Jane Austen", "autor2": "", "autor3": ""}, "costo": 260.0}
+}
+    """
 # Punto de entrada al programa
 main()
 
