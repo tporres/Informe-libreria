@@ -267,7 +267,7 @@ def modificarAlumno():
     Funcion para modificar alumnos al sistema.
     
     PARÁMETROS:
-            Alumnos = Diccionario
+            No recibe, busca el archivo Alumnos y lo convierte en diccionario
     SALIDA:
             Mensaje informativo que el Alumno fue modificado correctamente junto con las modificaciones realizadas.
             Ademas se actualiza el alumno ingresado en el diccionario "Alumnos".
@@ -673,8 +673,8 @@ def buscarLibrosPorCategoria():      #Funcion para buscar libros en base a su ca
     '''
     Solicita una categoria a buscar y luego imprime por pantalla un listado de los libros que coinciden con la categoria solicitada
     
-    PARAMETROS:
-    libros: Diccionario con la informacion de los libros
+    PARÁMETROS:
+            No recibe, busca el archivo Libros y lo convierte en diccionario
     SALIDA:
     imprime un listado con los libros cuya categoria coincide con la categoria buscada, en caso de no haber encontrado ninguno informa que no hay libros con esa categoria
     '''
