@@ -10,7 +10,7 @@
             "autor2": "",
             "autor3": ""
         },
-        "costo": 350.0
+        "costo": 350
     },
     "L002": {
         "activo": true,
@@ -23,7 +23,7 @@
             "autor2": "",
             "autor3": ""
         },
-        "costo": 280.0
+        "costo": 280
     },
     "L003": {
         "activo": true,
@@ -36,7 +36,7 @@
             "autor2": "",
             "autor3": ""
         },
-        "costo": 150.0
+        "costo": 150
     },
     "L004": {
         "activo": true,
@@ -49,7 +49,7 @@
             "autor2": "",
             "autor3": ""
         },
-        "costo": 400.0
+        "costo": 400
     },
     "L005": {
         "activo": true,
@@ -62,7 +62,7 @@
             "autor2": "",
             "autor3": ""
         },
-        "costo": 320.0
+        "costo": 320
     },
     "L006": {
         "activo": true,
@@ -75,7 +75,7 @@
             "autor2": "",
             "autor3": ""
         },
-        "costo": 270.0
+        "costo": 270
     },
     "L007": {
         "activo": true,
@@ -88,7 +88,7 @@
             "autor2": "",
             "autor3": ""
         },
-        "costo": 310.0
+        "costo": 310
     },
     "L008": {
         "activo": true,
@@ -101,7 +101,7 @@
             "autor2": "",
             "autor3": ""
         },
-        "costo": 380.0
+        "costo": 380
     },
     "L009": {
         "activo": true,
@@ -114,7 +114,7 @@
             "autor2": "",
             "autor3": ""
         },
-        "costo": 290.0
+        "costo": 290
     },
     "L010": {
         "activo": true,
@@ -127,6 +127,6 @@
             "autor2": "",
             "autor3": ""
         },
-        "costo": 260.0
+        "costo": 260
     }
 }
