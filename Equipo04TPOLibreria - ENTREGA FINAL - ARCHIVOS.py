@@ -87,6 +87,44 @@ def enteroPositivo(mensaje):
             print("Debe ser un número igual o mayor a 0.")
         except ValueError:
             print("Entrada inválida. Ingrese un número igual o mayor a 0.")
+            
+def enteroPositivoOpcional(mensaje):
+    """
+    Solicita un número entero mayor o igual a 0.
+    Permite dejar vacío (devuelve None si se presiona Enter).
+    """
+    while True:
+        entrada = input(mensaje).strip()
+        if entrada == "":
+            return None
+        if entrada.isdigit():
+            return int(entrada)
+        print("Error: debe ingresar un número entero positivo o dejar vacío.")
+            
+def validarEstado(actual):
+    """
+    Solicita el estado activo/inactivo del libro.
+    Permite ingresar 'si', 'no', o Enter para no modificar.
+    
+    Retorna:
+        - True si se ingresa 'si'
+        - False si se ingresa 'no'
+        - None si se deja vacío (no se modifica)
+    """
+    while True:
+        try:
+            entrada = input(f"¿Activo? (actual: {actual}, si/no, Enter para mantener): ").strip().lower()
+            if entrada == "":
+                return None
+            elif entrada == "si":
+                return True
+            elif entrada == "no":
+                return False
+            else:
+                raise ValueError
+        except ValueError:
+            print("Error: Debe ingresar 'si', 'no' o presionar Enter para no modificarlo.")
+
 
 # FUNCIONES PARA GESTIONAR ALUMNOS
 
@@ -404,9 +442,9 @@ def modificarLibro():
         nombre = input(f"Nombre actual ({libro['nombre']}): ").strip()
         editorial = input(f"Editorial actual ({libro['editorial']}): ").strip()
         categoria = input(f"Categoría actual ({libro['categoria']}): ").strip()
-        stock = enteroPositivo((f"Stock actual ({libro['stock']}): "))
-        costo=enteroPositivo(f"Costo actual ({libro['costo']}): ")
-        activo = input(f"¿Activo? (actual: {libro['activo']}, s/n): ").strip().lower()
+        stock = enteroPositivoOpcional((f"Stock actual ({libro['stock']}): "))
+        costo=enteroPositivoOpcional(f"Costo actual ({libro['costo']}): ")
+        activo = validarEstado(libro['activo'])
 
         autor1 = input(f"Autor 1 actual ({libro['autores']['autor1']}): ").strip()
         autor2 = input(f"Autor 2 actual ({libro['autores']['autor2']}): ").strip()
