@@ -527,8 +527,8 @@ def modificarLibro():
             libro['stock'] = int(stock)
         if costo:
             libro['costo'] = int(costo)
-        if activo:
-            libro['activo'] = (activo == "s")
+        if activo is not None :
+            libro['activo'] = activo
 
         if autor1:
             libro['autores']['autor1'] = autor1
