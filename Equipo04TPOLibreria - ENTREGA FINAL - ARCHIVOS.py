@@ -24,10 +24,26 @@ import re
 #FUNCIONES DE VALIDACION
 
 def validarEmail(_email):
+    '''
+    Valida si el formato del email ingresado es correcto mediante una expresión regular.
+    
+    PARAMETROS:
+    _email: cadena de texto que representa el email a validar.
+    
+    SALIDA:
+    Devuelve True si el email tiene un formato válido, False en caso contrario.
+    '''
     pat = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
     return bool(re.match(pat, _email))
 
 def pedirMail():
+    '''
+    Solicita al usuario que ingrese un email y valida su formato.
+    
+    PARAMETROS:
+    SALIDA:
+    Devuelve el email ingresado una vez que cumple con el formato válido.
+    '''
     email = input("Ingrese un email:").strip()
     while not validarEmail(email):
         print("Email inválido. Intente nuevamente.")
@@ -35,6 +51,15 @@ def pedirMail():
     return email
 
 def pedirTelefono(nro="Telefono"):
+    '''
+    Solicita al usuario que ingrese un número de teléfono válido, con opción a dejarlo vacío.
+    
+    PARAMETROS:
+    nro: etiqueta opcional que indica qué tipo de número se solicita (por defecto "Telefono").
+    
+    SALIDA:
+    Devuelve el número de teléfono ingresado si es válido, o una cadena vacía si el usuario lo omite.
+    '''
     while True:
         telefono = input(f"Ingrese {nro} (Enter para dejar vacío): ").strip()
         
@@ -48,6 +73,15 @@ def pedirTelefono(nro="Telefono"):
         
 
 def validarTelefono(_telefono):
+    '''
+    Valida que el número de teléfono contenga solo dígitos y tenga entre 10 y 12 caracteres.
+    
+    PARAMETROS:
+    _telefono: cadena de texto que representa el número a validar.
+    
+    SALIDA:
+    Devuelve True si el número es válido (solo dígitos, largo adecuado y mayor a 0), False en caso contrario.
+    '''
     _telefono = _telefono.strip()
     if _telefono.isdigit() and 10 <= len(_telefono) <= 12:
         return int(_telefono) > 0
@@ -55,10 +89,26 @@ def validarTelefono(_telefono):
         return False
     
 def validarNombre(_nombre):
+    '''
+    Valida que el nombre ingresado contenga solo letras (permitiendo espacios).
+    
+    PARAMETROS:
+    _nombre: cadena de texto que representa el nombre a validar.
+    
+    SALIDA:
+    Devuelve True si el nombre contiene únicamente letras y espacios, False en caso contrario.
+    '''
     nombreSinEspacios= _nombre.replace(" ", "")
     return nombreSinEspacios.isalpha()
 
 def pedirNombre():
+    '''
+    Solicita al usuario que ingrese un nombre y valida que contenga solo letras y espacios.
+    
+    PARAMETROS:
+    SALIDA:
+    Devuelve el nombre ingresado si es válido. Muestra un mensaje de error si el formato es incorrecto.
+    '''
     while True:
         try:
             nombre = input("Nombre: ").strip()
@@ -69,6 +119,13 @@ def pedirNombre():
             print("Error: El nombre solo debe contener letras y espacios")
 
 def pedirApellido():
+    '''
+    Solicita al usuario que ingrese un apellido y valida que contenga solo letras y espacios.
+    
+    PARAMETROS:
+    SALIDA:
+    Devuelve el apellido ingresado si es válido. Muestra un mensaje de error si el formato es incorrecto.
+    '''
     while True:
         try:
             apellido = input("Apellido: ").strip()
@@ -79,6 +136,15 @@ def pedirApellido():
             print("Error: El apellido solo debe contener letras y espacios")
 
 def enteroPositivo(mensaje):
+    '''
+    Solicita al usuario que ingrese un número entero positivo o cero, y valida la entrada.
+    
+    PARAMETROS:
+    mensaje: texto que se muestra al solicitar el valor al usuario.
+    
+    SALIDA:
+    Devuelve el valor ingresado como entero si es válido (mayor o igual a 0). Muestra mensajes de error en caso de entrada inválida.
+    '''
     while True:
         try:
             valor = int(input(mensaje))
@@ -1206,3 +1272,4 @@ def main():
 
 # Punto de entrada al programa
 main()
+
